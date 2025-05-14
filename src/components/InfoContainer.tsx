@@ -48,7 +48,7 @@ const NavButton = styled.button<{ position: 'left' | 'right', nightMode: boolean
     top: 50%;
     ${props => props.position}: 0;
     transform: translateY(-50%);
-    background: ${props => props.nightMode ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)'};
+    background: 'rgba(255, 255, 255, 0.5)';
     border: none;
     border-radius: 50%;
     width: 30px;

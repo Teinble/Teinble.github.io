@@ -240,8 +240,8 @@ const About = ({ nightMode }: AboutProps) => {
                         <InterestParagraph>
                             While transformer models like <Highlight>ChatGPT</Highlight> have significantly advanced NLP, 
                             barriers such as high computational costs and limited resources still prevent underfunded enterprises 
-                            from leveraging these technologies. I'm passionate about making NLP technologies more 
-                            <Highlight>efficient</Highlight> and <Highlight>scalable</Highlight> to facilitate their widespread adoption.
+                            from leveraging these technologies. I'm passionate about making NLP technologies 
+                            more <Highlight>efficient</Highlight> and <Highlight>scalable</Highlight> to facilitate their widespread adoption.
                         </InterestParagraph>
                     </InterestSection>
 
