@@ -182,7 +182,7 @@ const About = ({ nightMode }: AboutProps) => {
                         <Program>Master of Applied Science in Computer Science (Sep 2025 - July 2027)</Program>
                         <Program>Honours Bachelor of Science in Computer Science (Sep 2021 - June 2025) </Program>
                         <Detail>cGPA: 3.94/4.00</Detail>
-                        <Detail>Achievements: Dean's List Scholar x 3</Detail>
+                        <Detail>Achievements: Dean's List Scholar x 4</Detail>
                         <Detail>
                             Courses Taken: Natural Language Processing, Operating System, Neural Nets and Deep Learning, Computer Networks, 
                             Algorithm Design & Analysis, Software Engineering, Introduction to Databases, and more.
@@ -208,7 +208,7 @@ const About = ({ nightMode }: AboutProps) => {
 
                     <WorkItem nightMode={nightMode}>
                         <CompanyName>IQBank</CompanyName>
-                        <Position>Full Stack Engineering Team Lead</Position>
+                        <Position>Full Stack Engineering, Team Lead</Position>
                         <Duration>September 2023 - April 2024</Duration>
                         <WorkDescription>
                             <WorkListItem>
@@ -276,6 +276,7 @@ const About = ({ nightMode }: AboutProps) => {
                         <SkillsGrid>
                             <SkillItem nightMode={nightMode}>React</SkillItem>
                             <SkillItem nightMode={nightMode}>React Native</SkillItem>
+                            <SkillItem nightMode={nightMode}>Tailwind CSS</SkillItem>
                             <SkillItem nightMode={nightMode}>DeepEval</SkillItem>
                             <SkillItem nightMode={nightMode}>LangChain</SkillItem>
                             <SkillItem nightMode={nightMode}>HuggingFace</SkillItem>

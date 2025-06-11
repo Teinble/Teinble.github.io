@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { colors } from '../theme';
 import {FaSchool, FaGithub, FaInstagram, FaLinkedin, FaHome, FaUser, FaEnvelope, FaChevronLeft, FaChevronRight, } from 'react-icons/fa';
 import { FaLocationDot } from 'react-icons/fa6';
-import { FiX } from 'react-icons/fi';
 
 const InfoContainer = styled.div`
     display: flex;
@@ -57,7 +56,7 @@ const NavButton = styled.button<{ position: 'left' | 'right', nightMode: boolean
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: ${props => props.nightMode ? colors.text.light : colors.text.dark};
+    color: ${colors.text.light};
     transition: all 0.3s ease;
 
     &:hover {
