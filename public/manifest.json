@@ -1,15 +1,15 @@
 {
-  "short_name": "Xiling's Site",
-  "name": "Xiling Zhao's Personal Website",
-  "icons": [
-    {
-      "src": "Frog_profile.jpg",
-      "sizes": "any",
-      "type": "image/jpeg"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+	"short_name": "Xiling's Site",
+	"name": "Xiling Zhao's Personal Website",
+	"icons": [
+		{
+			"src": "Frog_profile.jpg",
+			"sizes": "any",
+			"type": "image/jpeg"
+		}
+	],
+	"start_url": ".",
+	"display": "standalone",
+	"theme_color": "#000000",
+	"background_color": "#ffffff"
 }

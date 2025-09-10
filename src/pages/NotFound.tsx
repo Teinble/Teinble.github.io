@@ -1,7 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { colors } from '../theme';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { colors } from "../theme";
 
 const NotFoundContainer = styled.div<{ $nightMode: boolean }>`
     padding: 2rem;
@@ -13,7 +12,7 @@ const NotFoundContainer = styled.div<{ $nightMode: boolean }>`
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: ${props => props.$nightMode ? colors.text.dark : colors.text.light};
+    color: ${(props) => (props.$nightMode ? colors.text.dark : colors.text.light)};
 `;
 
 const ErrorCode = styled.h1`
@@ -55,23 +54,21 @@ const HomeButton = styled(Link)`
 `;
 
 interface NotFoundProps {
-    nightMode: boolean;
+	nightMode: boolean;
 }
 
 const NotFound = ({ nightMode }: NotFoundProps) => {
-    return (
-        <NotFoundContainer $nightMode={nightMode}>
-            <ErrorCode>404</ErrorCode>
-            <Title>Page Not Found</Title>
-            <Message>
-                Oops! The page you're looking for doesn't exist or has been moved.
-                Let's get you back on track.
-            </Message>
-            <HomeButton to="/">
-                ← Back to Home
-            </HomeButton>
-        </NotFoundContainer>
-    );
+	return (
+		<NotFoundContainer $nightMode={nightMode}>
+			<ErrorCode>404</ErrorCode>
+			<Title>Page Not Found</Title>
+			<Message>
+				Oops! The page you're looking for doesn't exist or has been moved. Let's
+				get you back on track.
+			</Message>
+			<HomeButton to="/">← Back to Home</HomeButton>
+		</NotFoundContainer>
+	);
 };
 
-export default NotFound; 
+export default NotFound;
