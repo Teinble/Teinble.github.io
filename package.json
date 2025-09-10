@@ -25,6 +25,7 @@
 		"babel-plugin-styled-components": "^2.1.4",
 		"gh-pages": "^6.1.1",
 		"jsdom": "^25.0.1",
+		"lint-staged": "^16.1.6",
 		"typescript": "^5.9.2",
 		"vite": "^7.1.5",
 		"vitest": "^2.1.4"
@@ -38,7 +39,8 @@
 		"lint": "biome check",
 		"lint:fix": "biome check --write",
 		"predeploy": "vite build",
-		"deploy": "gh-pages -d dist"
+		"deploy": "gh-pages -d dist",
+		"prepare": "husky"
 	},
 	"browserslist": {
 		"production": [
@@ -50,6 +52,11 @@
 			"last 1 chrome version",
 			"last 1 firefox version",
 			"last 1 safari version"
+		]
+	},
+	"lint-staged": {
+		"*.{js, jsx, ts, tsx}": [
+			"npm run lint:fix"
 		]
 	}
 }
