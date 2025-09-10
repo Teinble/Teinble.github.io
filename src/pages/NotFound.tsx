@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { colors } from '../theme';
 import { Link } from 'react-router-dom';
 
-const NotFoundContainer = styled.div<{ nightMode: boolean }>`
+const NotFoundContainer = styled.div<{ $nightMode: boolean }>`
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -13,7 +13,7 @@ const NotFoundContainer = styled.div<{ nightMode: boolean }>`
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: ${props => props.nightMode ? colors.text.dark : colors.text.light};
+    color: ${props => props.$nightMode ? colors.text.dark : colors.text.light};
 `;
 
 const ErrorCode = styled.h1`
@@ -60,7 +60,7 @@ interface NotFoundProps {
 
 const NotFound = ({ nightMode }: NotFoundProps) => {
     return (
-        <NotFoundContainer nightMode={nightMode}>
+        <NotFoundContainer $nightMode={nightMode}>
             <ErrorCode>404</ErrorCode>
             <Title>Page Not Found</Title>
             <Message>

@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { colors } from '../theme';
 
-const NotesContainer = styled.div<{ nightMode: boolean }>`
+const NotesContainer = styled.div<{ $nightMode: boolean }>`
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    color: ${props => props.nightMode ? colors.text.dark : colors.text.light};
+    color: ${props => props.$nightMode ? colors.text.dark : colors.text.light};
     display: flex;
     gap: 2rem;
 `;
@@ -29,11 +29,11 @@ const Section = styled.section`
     margin-bottom: 2rem;
 `;
 
-const NoteItem = styled.div<{ nightMode: boolean }>`
-    background-color: ${props => props.nightMode ? colors.background.dark : colors.background.light};
+const NoteItem = styled.div<{ $nightMode: boolean }>`
+    background-color: ${props => props.$nightMode ? colors.background.dark : colors.background.light};
     padding: 1.5rem;
     border-radius: 8px;
-    border: 1px solid ${props => props.nightMode ? colors.border.dark : colors.border.light};
+    border: 1px solid ${props => props.$nightMode ? colors.border.dark : colors.border.light};
     margin-bottom: 1.5rem;
     transition: all 0.3s ease;
 
@@ -96,7 +96,7 @@ interface NotesProps {
 
 const Notes = ({ nightMode }: NotesProps) => {
     return (
-        <NotesContainer nightMode={nightMode}>
+        <NotesContainer $nightMode={nightMode}>
             <ContentContainer>
                 <Title>Course Notes</Title>
                 <Explanation>
@@ -105,7 +105,7 @@ const Notes = ({ nightMode }: NotesProps) => {
                     I hope they can be helpful for you!
                 </Explanation>
                 <Section>
-                    <NoteItem nightMode={nightMode}>
+                    <NoteItem $nightMode={nightMode}>
                         <CourseTitle>Introduction to Artificial Intelligence <CourseCode>CSC384 2025W</CourseCode></CourseTitle>
                         <NoteContent>
                             This course overall is a relatively easy course. The final exam is kind tricky in my term.
@@ -116,7 +116,7 @@ const Notes = ({ nightMode }: NotesProps) => {
                         </NoteLink>
                     </NoteItem>
 
-                    <NoteItem nightMode={nightMode}>
+                    <NoteItem $nightMode={nightMode}>
                         <CourseTitle>Introduction to Linguistics: Sentence<CourseCode>Lin102 2025W</CourseCode></CourseTitle>
                         <NoteContent>
                             This is a very interesting course. Even though it is a breadth course, but it is not that easy.
@@ -127,7 +127,7 @@ const Notes = ({ nightMode }: NotesProps) => {
                         </NoteLink>
                     </NoteItem>
 
-                    <NoteItem nightMode={nightMode}>
+                    <NoteItem $nightMode={nightMode}>
                         <CourseTitle>Introduction to Graph Theory <CourseCode>MAT332 2024W</CourseCode></CourseTitle>
                         <NoteContent>
                             Very interesting course! To achieve high mark, need pay attention to every lecture. 
@@ -142,7 +142,7 @@ const Notes = ({ nightMode }: NotesProps) => {
                         </NoteLink>
                     </NoteItem>
 
-                    <NoteItem nightMode={nightMode}>
+                    <NoteItem $nightMode={nightMode}>
                         <CourseTitle>Operating System <CourseCode>CSC369 2023F</CourseCode></CourseTitle>
                         <NoteContent>
                             I can say this is the most difficult course I took at UofT. 

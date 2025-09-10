@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { colors } from '../theme';
 
-const AboutContainer = styled.div<{ nightMode: boolean }>`
+const AboutContainer = styled.div<{ $nightMode: boolean }>`
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    color: ${props => props.nightMode ? colors.text.dark : colors.text.light};
+    color: ${props => props.$nightMode ? colors.text.dark : colors.text.light};
     display: flex;
     gap: 2rem;
 `;
@@ -82,11 +82,11 @@ const SkillsGrid = styled.div`
     margin-bottom: 1rem;
 `;
 
-const SkillItem = styled.div<{ nightMode: boolean }>`
-    background-color: ${props => props.nightMode ? colors.background.dark : colors.background.light};
+const SkillItem = styled.div<{ $nightMode: boolean }>`
+    background-color: ${props => props.$nightMode ? colors.background.dark : colors.background.light};
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    border: 1px solid ${props => props.nightMode ? colors.border.dark : colors.border.light};
+    border: 1px solid ${props => props.$nightMode ? colors.border.dark : colors.border.light};
     text-align: center;
     transition: all 0.3s ease;
 
@@ -116,12 +116,12 @@ const InterestTitle = styled.h3`
     color: ${colors.text.gray};
 `;
 
-const WorkItem = styled.div<{ nightMode: boolean }>`
+const WorkItem = styled.div<{ $nightMode: boolean }>`
     margin-bottom: 2rem;
     padding: 1.5rem;
-    background-color: ${props => props.nightMode ? colors.background.dark : colors.background.light};
+    background-color: ${props => props.$nightMode ? colors.background.dark : colors.background.light};
     border-radius: 8px;
-    border: 1px solid ${props => props.nightMode ? colors.border.dark : colors.border.light};
+    border: 1px solid ${props => props.$nightMode ? colors.border.dark : colors.border.light};
     transition: all 0.3s ease;
 
     &:hover {
@@ -166,7 +166,7 @@ interface AboutProps {
 
 const About = ({ nightMode }: AboutProps) => {
     return (
-        <AboutContainer nightMode={nightMode}>
+        <AboutContainer $nightMode={nightMode}>
             <ContentContainer>
                 <Title>About Me</Title>
                 <Section>
@@ -192,7 +192,7 @@ const About = ({ nightMode }: AboutProps) => {
 
                 <Section>
                     <SectionTitle>💼 Work Experience</SectionTitle>
-                    <WorkItem nightMode={nightMode}>
+                    <WorkItem $nightMode={nightMode}>
                         <CompanyName>Beijing Xiaomi Mobile Software Co., Ltd.</CompanyName>
                         <Position>Software Engineer Intern</Position>
                         <Duration>May 2024 - Aug 2024</Duration>
@@ -206,7 +206,7 @@ const About = ({ nightMode }: AboutProps) => {
                         </WorkDescription>
                     </WorkItem>
 
-                    <WorkItem nightMode={nightMode}>
+                    <WorkItem $nightMode={nightMode}>
                         <CompanyName>IQBank</CompanyName>
                         <Position>Full Stack Engineering, Team Lead</Position>
                         <Duration>September 2023 - April 2024</Duration>
@@ -264,42 +264,42 @@ const About = ({ nightMode }: AboutProps) => {
                     <SkillsSection>
                         <SkillsCategory>Programming Languages</SkillsCategory>
                         <SkillsGrid>
-                            <SkillItem nightMode={nightMode}>Python</SkillItem>
-                            <SkillItem nightMode={nightMode}>Java</SkillItem>
-                            <SkillItem nightMode={nightMode}>C</SkillItem>
-                            <SkillItem nightMode={nightMode}>TypeScript</SkillItem>
-                            <SkillItem nightMode={nightMode}>PostgreSQL</SkillItem>
-                            <SkillItem nightMode={nightMode}>HTML/CSS</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Python</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Java</SkillItem>
+                            <SkillItem $nightMode={nightMode}>C</SkillItem>
+                            <SkillItem $nightMode={nightMode}>TypeScript</SkillItem>
+                            <SkillItem $nightMode={nightMode}>PostgreSQL</SkillItem>
+                            <SkillItem $nightMode={nightMode}>HTML/CSS</SkillItem>
                         </SkillsGrid>
 
                         <SkillsCategory>Frameworks and Libraries</SkillsCategory>
                         <SkillsGrid>
-                            <SkillItem nightMode={nightMode}>React</SkillItem>
-                            <SkillItem nightMode={nightMode}>React Native</SkillItem>
-                            <SkillItem nightMode={nightMode}>Tailwind CSS</SkillItem>
-                            <SkillItem nightMode={nightMode}>DeepEval</SkillItem>
-                            <SkillItem nightMode={nightMode}>LangChain</SkillItem>
-                            <SkillItem nightMode={nightMode}>HuggingFace</SkillItem>
-                            <SkillItem nightMode={nightMode}>Django</SkillItem>
-                            <SkillItem nightMode={nightMode}>PyTorch</SkillItem>
-                            <SkillItem nightMode={nightMode}>Numpy</SkillItem>
-                            <SkillItem nightMode={nightMode}>Scipy</SkillItem>
-                            <SkillItem nightMode={nightMode}>Scikit-learn</SkillItem>
-                            <SkillItem nightMode={nightMode}>Pandas</SkillItem>
-                            <SkillItem nightMode={nightMode}>Streamlit</SkillItem>
+                            <SkillItem $nightMode={nightMode}>React</SkillItem>
+                            <SkillItem $nightMode={nightMode}>React Native</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Tailwind CSS</SkillItem>
+                            <SkillItem $nightMode={nightMode}>DeepEval</SkillItem>
+                            <SkillItem $nightMode={nightMode}>LangChain</SkillItem>
+                            <SkillItem $nightMode={nightMode}>HuggingFace</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Django</SkillItem>
+                            <SkillItem $nightMode={nightMode}>PyTorch</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Numpy</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Scipy</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Scikit-learn</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Pandas</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Streamlit</SkillItem>
                         </SkillsGrid>
 
                         <SkillsCategory>Tools</SkillsCategory>
                         <SkillsGrid>
-                            <SkillItem nightMode={nightMode}>LATEX</SkillItem>
-                            <SkillItem nightMode={nightMode}>Git</SkillItem>
-                            <SkillItem nightMode={nightMode}>Linux</SkillItem>
-                            <SkillItem nightMode={nightMode}>Docker</SkillItem>
-                            <SkillItem nightMode={nightMode}>Anaconda</SkillItem>
-                            <SkillItem nightMode={nightMode}>Prisma</SkillItem>
-                            <SkillItem nightMode={nightMode}>Figma</SkillItem>
-                            <SkillItem nightMode={nightMode}>Selenium</SkillItem>
-                            <SkillItem nightMode={nightMode}>BeautifulSoup</SkillItem>
+                            <SkillItem $nightMode={nightMode}>LATEX</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Git</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Linux</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Docker</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Anaconda</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Prisma</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Figma</SkillItem>
+                            <SkillItem $nightMode={nightMode}>Selenium</SkillItem>
+                            <SkillItem $nightMode={nightMode}>BeautifulSoup</SkillItem>
                         </SkillsGrid>
                     </SkillsSection>
                 </Section>

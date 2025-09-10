@@ -9,9 +9,9 @@ import InfoContainerComponent from './components/InfoContainer';
 import Notes from './pages/Notes';
 import NotFound from './pages/NotFound';
 
-const MainContainer = styled.main<{ nightMode: boolean }>`
-    background-color: ${props => props.nightMode ? colors.background.dark : colors.background.light};
-    color: ${props => props.nightMode ? colors.text.dark : colors.text.light};
+const MainContainer = styled.main<{ $nightMode: boolean }>`
+    background-color: ${props => props.$nightMode ? colors.background.dark : colors.background.light};
+    color: ${props => props.$nightMode ? colors.text.dark : colors.text.light};
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -45,7 +45,7 @@ const App = () => {
 
     return (
         <Router>
-            <MainContainer nightMode={nightMode}>
+            <MainContainer $nightMode={nightMode}>
                 <Header 
                     nightMode={nightMode} 
                     toggleNightMode={toggleNightMode}
