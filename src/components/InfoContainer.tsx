@@ -189,7 +189,7 @@ interface InfoContainerProps {
 
 const InfoContainerComponent = ({ nightMode }: InfoContainerProps) => {
 	const [currentImageIndex, setCurrentImageIndex] = useState(0);
-	const images = ['/profile1.JPG', '/profile2.JPG', '/profile3.JPG'];
+	const images = ["/profile1.JPG", "/profile2.JPG", "/profile3.JPG"];
 
 	const nextImage = () => {
 		setCurrentImageIndex((prev) => (prev + 1) % images.length);
