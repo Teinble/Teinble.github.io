@@ -8,6 +8,7 @@ import About from "./pages/About";
 import Notes from "./pages/Notes";
 import NotFound from "./pages/NotFound";
 import { Project } from "./pages/Project";
+import IQBank from "./pages/projects/iqbank";
 import { colors } from "./theme";
 
 const MainContainer = styled.main<{ $nightMode: boolean }>`
@@ -56,6 +57,10 @@ const App = () => {
 							<Route
 								path="/projects"
 								element={<Project nightMode={nightMode} />}
+							/>
+							<Route
+								path="/projects/iqbank"
+								element={<IQBank nightMode={nightMode} />}
 							/>
 							<Route path="/notes" element={<Notes nightMode={nightMode} />} />
 							<Route path="*" element={<NotFound nightMode={nightMode} />} />
