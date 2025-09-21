@@ -5,6 +5,11 @@ export const colors = {
 		light: "#60a5fa", // Blue 400
 		dark: "#1d4ed8", // Blue 700
 	},
+	secondary: {
+		main: "#10b981", // Emerald 500
+		light: "#34d399", // Emerald 400
+		dark: "#059669", //
+	},
 	// Background colors
 	background: {
 		light: "#ffffff",

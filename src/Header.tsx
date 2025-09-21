@@ -180,6 +180,12 @@ const Header = ({ nightMode, toggleNightMode }: HeaderProps) => {
 						onClick={closeMenu}
 					/>
 					<HeaderLink
+						to="/projects"
+						text="My Projects"
+						nightMode={nightMode}
+						onClick={closeMenu}
+					/>
+					<HeaderLink
 						to="/notes"
 						text="My Notes"
 						nightMode={nightMode}
