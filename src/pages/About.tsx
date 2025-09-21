@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "../theme";
 
@@ -206,6 +207,50 @@ const About = ({ nightMode }: AboutProps) => {
 				<Section>
 					<SectionTitle>💼 Work Experience</SectionTitle>
 					<WorkItem $nightMode={nightMode}>
+						<CompanyName>
+							<a
+								href="https://iqbank.teach.cs.toronto.edu"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								IQBank
+							</a>
+						</CompanyName>
+						<Position>Founder</Position>
+						<Duration>May 2025 - Present</Duration>
+						<WorkDescription>
+							<WorkListItem>
+								Led a team of <strong>8</strong> developers in architecting and
+								building a full-stack educational platform from scratch,
+								currently serving for <strong>400+</strong> collaborative exam
+								preparation and peer-to-peer learning
+							</WorkListItem>
+							<WorkListItem>
+								Implemented innovative single-click question creation directly
+								on PDF exams using coordinate-based positioning, making a
+								question annotation <strong>10x</strong> faster than traditional
+								form-based input methods
+							</WorkListItem>
+							<WorkListItem>
+								Orchestrated feature development and task delegation across the
+								team, implementing Biome linter with pre-commit hooks via Husky
+								and automated GitHub Actions workflows for type-checking and
+								testing to maintain code quality
+							</WorkListItem>
+							<WorkListItem>
+								Developed engagement tracking dashboard with real-time metrics
+								(likes, endorsements), enabling professors to identify and
+								promote top contributors as <strong>”Junior TAs”</strong>,
+								increasing student participation and peer support
+							</WorkListItem>
+							<WorkListItem>
+								More details about the project can be found{" "}
+								<Link to="/projects/iqbank">here</Link>
+							</WorkListItem>
+						</WorkDescription>
+					</WorkItem>
+
+					<WorkItem $nightMode={nightMode}>
 						<CompanyName>Beijing Xiaomi Mobile Software Co., Ltd.</CompanyName>
 						<Position>Software Engineer Intern</Position>
 						<Duration>May 2024 - Aug 2024</Duration>
@@ -225,37 +270,6 @@ const About = ({ nightMode }: AboutProps) => {
 							</WorkListItem>
 						</WorkDescription>
 					</WorkItem>
-
-					<WorkItem $nightMode={nightMode}>
-						<CompanyName>IQBank</CompanyName>
-						<Position>Full Stack Engineering, Team Lead</Position>
-						<Duration>September 2023 - April 2024</Duration>
-						<WorkDescription>
-							<WorkListItem>
-								Presented at the University of Toronto's{" "}
-								<strong>Applied Research in Action (ARIA)</strong> showcase,
-								featuring over 150 student-led R\&D projects
-							</WorkListItem>
-							<WorkListItem>
-								Implemented robust software architecture ensuring system
-								reliability and scalability
-							</WorkListItem>
-							<WorkListItem>
-								Mentored junior developers and conducted code reviews to
-								maintain code quality
-							</WorkListItem>
-							<WorkListItem>
-								A demo version available at{" "}
-								<a
-									href="https://demo.iqbank.xyz/"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									here
-								</a>
-							</WorkListItem>
-						</WorkDescription>
-					</WorkItem>
 				</Section>
 
 				<Section>
@@ -268,8 +282,7 @@ const About = ({ nightMode }: AboutProps) => {
 							Driven by my passion for creating AI systems that accurately
 							understand and generate human language, my primary research
 							interest lies in <Highlight>Computational Linguistics</Highlight>{" "}
-							and
-							<Highlight>Natural Language Processing (NLP)</Highlight>. This
+							and <Highlight>Natural Language Processing (NLP)</Highlight>. This
 							interest has been cultivated through previous coursework,
 							projects, and internship experiences.
 						</InterestParagraph>
@@ -288,20 +301,13 @@ const About = ({ nightMode }: AboutProps) => {
 						<InterestTitle>Secondary Focus: Software Engineering</InterestTitle>
 						<InterestParagraph>
 							My secondary interest is in{" "}
-							<Highlight>Software Engineering</Highlight>, particularly in areas
-							like <Highlight>software reliability</Highlight> and{" "}
+							<Highlight>Full Stack Software Engineering</Highlight>,
+							particularly in areas like{" "}
+							<Highlight>software reliability</Highlight>,{" "}
+							<Highlight>testing</Highlight>{" "}
 							<Highlight>fault tolerance</Highlight>. I've developed expertise
 							in ensuring system robustness and maintainability while leading a
-							15-member team for the <Highlight>IQBank project</Highlight>.
-							expertise in ensuring system robustness and maintainability while
-							leading a 15-member team for the{" "}
-							<Highlight>IQBank project</Highlight>.
-						</InterestParagraph>
-						<InterestParagraph>
-							As AI increasingly intersects with software engineering, evident
-							in emerging trends like Cursor and MLOps, I'm enthusiastic about
-							creating reliable systems that support cutting-edge AI
-							technologies.
+							8-member team for the <Highlight>IQBank project</Highlight>.
 						</InterestParagraph>
 					</InterestSection>
 				</Section>
