@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { colors } from '../theme';
-import {FaSchool, FaGithub, FaInstagram, FaLinkedin, FaHome, FaUser, FaEnvelope, FaChevronLeft, FaChevronRight, } from 'react-icons/fa';
-import { FaLocationDot } from 'react-icons/fa6';
+import type React from "react";
+import { useState } from "react";
+import {
+	FaChevronLeft,
+	FaChevronRight,
+	FaEnvelope,
+	FaGithub,
+	FaInstagram,
+	FaLinkedin,
+	FaSchool,
+} from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
+import styled from "styled-components";
+import { colors } from "../theme";
 
 const InfoContainer = styled.div`
     display: flex;
@@ -24,28 +33,31 @@ const ImageContainer = styled.div`
     margin: 0 auto;
 `;
 
-const ProfileImage = styled.img<{nightMode: boolean}>`
+const ProfileImage = styled.img<{ $nightMode: boolean }>`
     width: 100%;
     aspect-ratio: 1/1;
     object-fit: cover;
     padding: 0.2rem;
     border-radius: 15px;
-    border: 1px solid ${props => props.nightMode ? colors.background.light : colors.background.dark};
+    border: 1px solid ${(props) => (props.$nightMode ? colors.background.light : colors.background.dark)};
     box-shadow: 0 4px 8px rgba(94, 91, 91, 0.1);
     transition: opacity 0.3s ease;
 
     @media (max-width: 768px) {
         border-radius: 50%;
-        border: 1px solid ${props => props.nightMode ? colors.background.light : colors.background.dark};
+        border: 1px solid ${(props) => (props.$nightMode ? colors.background.light : colors.background.dark)};
         box-shadow: 0 4px 8px rgba(94, 91, 91, 0.1);
         transition: opacity 0.3s ease;
     }
 `;
 
-const NavButton = styled.button<{ position: 'left' | 'right', nightMode: boolean }>`
+const NavButton = styled.button<{
+	$position: "left" | "right";
+	$nightMode: boolean;
+}>`
     position: absolute;
     top: 50%;
-    ${props => props.position}: 0;
+    ${(props) => props.$position}: 0;
     transform: translateY(-50%);
     background: 'rgba(255, 255, 255, 0.5)';
     border: none;
@@ -60,7 +72,7 @@ const NavButton = styled.button<{ position: 'left' | 'right', nightMode: boolean
     transition: all 0.3s ease;
 
     &:hover {
-        background: ${props => props.nightMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.7)'};
+        background: ${(props) => (props.$nightMode ? "rgba(0, 0, 0, 0.7)" : "rgba(255, 255, 255, 0.7)")};
     }
 
     svg {
@@ -148,83 +160,95 @@ const IconText = styled.p`
     }
 `;
 
-const Icon = ({icon, text, link = ""}: {icon: React.ReactNode, text: string, link?: string}) => {
-    return (
-        <IconWrapper>
-            {icon}
-            {link ? (
-                <a href={link} target="_blank" rel="noopener noreferrer">
-                    <IconText>{text}</IconText>
-                </a>
-            ) : (
-                <IconText>{text}</IconText>
-            )}
-        </IconWrapper>
-    )
-}
+const Icon = ({
+	icon,
+	text,
+	link = "",
+}: {
+	icon: React.ReactNode;
+	text: string;
+	link?: string;
+}) => {
+	return (
+		<IconWrapper>
+			{icon}
+			{link ? (
+				<a href={link} target="_blank" rel="noopener noreferrer">
+					<IconText>{text}</IconText>
+				</a>
+			) : (
+				<IconText>{text}</IconText>
+			)}
+		</IconWrapper>
+	);
+};
 
 interface InfoContainerProps {
-    nightMode: boolean;
+	nightMode: boolean;
 }
 
 const InfoContainerComponent = ({ nightMode }: InfoContainerProps) => {
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const images = [
-        require('../assets/profile1.JPG'),
-        require('../assets/profile2.JPG'),
-        require('../assets/profile3.JPG')
-    ];
+	const [currentImageIndex, setCurrentImageIndex] = useState(0);
+	const images = ["/profile1.JPG", "/profile2.JPG", "/profile3.JPG"];
 
-    const nextImage = () => {
-        setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    };
+	const nextImage = () => {
+		setCurrentImageIndex((prev) => (prev + 1) % images.length);
+	};
 
-    const prevImage = () => {
-        setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-    };
+	const prevImage = () => {
+		setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+	};
 
-    return (
-        <InfoContainer>
-            <ImageContainer>
-                <ProfileImage 
-                    nightMode={nightMode} 
-                    src={images[currentImageIndex]} 
-                    alt="Xiling Zhao profile" 
-                />
-                <NavButton 
-                    position="left" 
-                    nightMode={nightMode} 
-                    onClick={prevImage}
-                >
-                    <FaChevronLeft />
-                </NavButton>
-                <NavButton 
-                    position="right" 
-                    nightMode={nightMode} 
-                    onClick={nextImage}
-                >
-                    <FaChevronRight />
-                </NavButton>
-            </ImageContainer>
-            <NameDescriptionContainer>
-                <NameContainer>
-                    <Title>Xiling (Will) Zhao</Title>
-                    <Pronoun>He/Him</Pronoun>
-                </NameContainer>
-                <Text>MScAC 27' @ University of Toronto</Text>
-                <Text>Computer Science 25' @ University of Toronto</Text>
+	return (
+		<InfoContainer>
+			<ImageContainer>
+				<ProfileImage
+					$nightMode={nightMode}
+					src={images[currentImageIndex]}
+					alt="Xiling Zhao profile"
+				/>
+				<NavButton $position="left" $nightMode={nightMode} onClick={prevImage}>
+					<FaChevronLeft />
+				</NavButton>
+				<NavButton $position="right" $nightMode={nightMode} onClick={nextImage}>
+					<FaChevronRight />
+				</NavButton>
+			</ImageContainer>
+			<NameDescriptionContainer>
+				<NameContainer>
+					<Title>Xiling (Will) Zhao</Title>
+					<Pronoun>He/Him</Pronoun>
+				</NameContainer>
+				<Text>MScAC 27' @ University of Toronto</Text>
+				<Text>Computer Science 25' @ University of Toronto</Text>
 
-                <IconContainer>
-                    <Icon icon={<FaSchool />} text="University of Toronto" />
-                    <Icon icon={<FaLocationDot />} text="Toronto, ON" />
-                    <Icon icon={<FaEnvelope />} text="Email" link="mailto:xiling.zhao@mail.utoronto.ca" />
-                    <Icon icon={<FaGithub />} text="Github" link="https://github.com/Teinble" />
-                    <Icon icon={<FaInstagram />} text="Instagram" link="https://www.instagram.com/willzhao86/" />
-                    <Icon icon={<FaLinkedin />} text="LinkedIn" link="https://www.linkedin.com/in/xilingzhao/" />
-                </IconContainer>
-            </NameDescriptionContainer>
-        </InfoContainer>
-    );
+				<IconContainer>
+					<Icon icon={<FaSchool />} text="University of Toronto" />
+					<Icon icon={<FaLocationDot />} text="Toronto, ON" />
+					<Icon
+						icon={<FaEnvelope />}
+						text="Email"
+						link="mailto:xiling.zhao@mail.utoronto.ca"
+					/>
+					<Icon
+						icon={<FaGithub />}
+						text="Github"
+						link="https://github.com/Teinble"
+					/>
+					<Icon
+						icon={<FaInstagram />}
+						text="Instagram"
+						link="https://www.instagram.com/willzhao86/"
+					/>
+					<Icon
+						icon={<FaLinkedin />}
+						text="LinkedIn"
+						link="https://www.linkedin.com/in/xilingzhao/"
+					/>
+				</IconContainer>
+			</NameDescriptionContainer>
+		</InfoContainer>
+	);
 };
 
-export default InfoContainerComponent; 
+export default InfoContainerComponent;
