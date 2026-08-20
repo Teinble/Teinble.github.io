@@ -1,74 +1,22 @@
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { colors } from "../theme";
 
-const NotFoundContainer = styled.div<{ $nightMode: boolean }>`
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    min-height: 70vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: ${(props) => (props.$nightMode ? colors.text.dark : colors.text.light)};
-`;
-
-const ErrorCode = styled.h1`
-    font-size: 8rem;
-    font-weight: 700;
-    margin: 0;
-    color: ${colors.primary.main};
-    line-height: 1;
-`;
-
-const Title = styled.h2`
-    font-size: 2rem;
-    margin: 1rem 0;
-`;
-
-const Message = styled.p`
-    font-size: 1.2rem;
-    color: ${colors.text.gray};
-    margin-bottom: 2rem;
-    max-width: 600px;
-`;
-
-const HomeButton = styled(Link)`
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background-color: ${colors.primary.main};
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-
-    &:hover {
-        background-color: ${colors.primary.dark};
-        transform: translateY(-2px);
-    }
-`;
-
-interface NotFoundProps {
-	nightMode: boolean;
-}
-
-const NotFound = ({ nightMode }: NotFoundProps) => {
-	return (
-		<NotFoundContainer $nightMode={nightMode}>
-			<ErrorCode>404</ErrorCode>
-			<Title>Page Not Found</Title>
-			<Message>
-				Oops! The page you're looking for doesn't exist or has been moved. Let's
-				get you back on track.
-			</Message>
-			<HomeButton to="/">← Back to Home</HomeButton>
-		</NotFoundContainer>
-	);
-};
+const NotFound = ({ nightMode: _nightMode }: { nightMode: boolean }) => (
+	<div className="mx-auto flex min-h-[70vh] max-w-[1200px] flex-col items-center justify-center p-8 text-center">
+		<h1 className="m-0 text-9xl font-bold leading-none text-blue-600 max-md:text-7xl">
+			404
+		</h1>
+		<h2 className="my-4 text-3xl font-bold">Page Not Found</h2>
+		<p className="mb-8 max-w-xl text-xl text-gray-500">
+			Oops! The page you&apos;re looking for doesn&apos;t exist or has been
+			moved. Let&apos;s get you back on track.
+		</p>
+		<Link
+			to="/"
+			className="inline-flex rounded bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700"
+		>
+			← Back to Home
+		</Link>
+	</div>
+);
 
 export default NotFound;

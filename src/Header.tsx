@@ -1,150 +1,11 @@
-import { useState } from "react";
-import { FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
+import {
+	Bars3Icon,
+	MoonIcon,
+	SunIcon,
+	XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
-import { colors } from "./theme";
-
-const HeaderContainer = styled.div<{ $nightMode: boolean }>`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: ${(props) => (props.$nightMode ? colors.background.dark : colors.background.light)};
-    padding: 10px 20px;
-    border-bottom: 1px solid ${(props) => (props.$nightMode ? colors.border.dark : colors.border.light)};
-    color: ${(props) => (props.$nightMode ? colors.text.dark : colors.text.light)};
-    position: relative;
-`;
-
-const Nav = styled.nav<{ $isOpen: boolean; $nightMode: boolean }>`
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    @media (max-width: 768px) {
-        position: fixed;
-        top: 0;
-        right: ${(props) => (props.$isOpen ? "0" : "-100%")};
-        height: 100vh;
-        width: 250px;
-        background-color: ${(props) => (props.$nightMode ? colors.background.dark : colors.background.light)};
-        flex-direction: column;
-        padding: 60px 20px 20px;
-        transition: right 0.3s ease;
-        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-        z-index: 2;
-    }
-`;
-
-const HeaderItem = styled(Link)<{ $active?: boolean; $nightMode: boolean }>`
-    text-decoration: none;
-    color: ${(props) =>
-			props.$active
-				? colors.primary.main
-				: props.$nightMode
-					? colors.text.dark
-					: colors.text.light};
-    padding: 5px 10px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    font-weight: ${(props) => (props.$active ? "500" : "normal")};
-
-    &:hover {
-        background-color: ${(props) => (props.$nightMode ? colors.hover.dark : colors.hover.light)};
-        color: ${(props) => (props.$active ? colors.primary.main : colors.primary.light)};
-    }
-
-    @media (max-width: 768px) {
-        width: 100%;
-        text-align: center;
-        padding: 10px;
-    }
-`;
-
-const ThemeButton = styled.button<{ $nightMode: boolean }>`
-    color: ${(props) => (props.$nightMode ? colors.text.dark : colors.text.light)};
-    transition: all 0.3s ease;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-        background-color: ${(props) => (props.$nightMode ? colors.hover.dark : colors.hover.light)};
-        color: ${colors.primary.main};
-    }
-
-    svg {
-        width: 20px;
-        height: 20px;
-    }
-`;
-
-const MenuButton = styled(ThemeButton)`
-    display: none;
-    
-    @media (max-width: 768px) {
-        display: flex;
-    }
-`;
-
-const Overlay = styled.div<{ $isOpen: boolean }>`
-    display: none;
-    
-    @media (max-width: 768px) {
-        display: ${(props) => (props.$isOpen ? "block" : "none")};
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1;
-    }
-`;
-
-const CloseButton = styled(ThemeButton)`
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: none;
-
-    @media (max-width: 768px) {
-        display: flex;
-    }
-`;
-
-const Title = styled.h1`
-    font-size: 1rem;
-    font-weight: 500;
-    margin: 0;
-`;
-
-interface HeaderItemProps {
-	to: string;
-	text: string;
-	nightMode: boolean;
-	onClick?: () => void;
-}
-
-const HeaderLink = ({ to, text, nightMode, onClick }: HeaderItemProps) => {
-	const location = useLocation();
-	const isActive = location.pathname === to;
-
-	return (
-		<HeaderItem
-			to={to}
-			$active={isActive}
-			$nightMode={nightMode}
-			onClick={onClick}
-		>
-			{text}
-		</HeaderItem>
-	);
-};
 
 interface HeaderProps {
 	nightMode: boolean;
@@ -152,52 +13,99 @@ interface HeaderProps {
 }
 
 const Header = ({ nightMode, toggleNightMode }: HeaderProps) => {
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
+	const { pathname } = useLocation();
+	const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-	const toggleMenu = () => {
-		setIsMenuOpen(!isMenuOpen);
-	};
+	useEffect(() => {
+		void pathname;
+		setIsOpen(false);
+	}, [pathname]);
 
-	const closeMenu = () => {
-		setIsMenuOpen(false);
-	};
+	useEffect(() => {
+		if (!isOpen) return;
+		closeButtonRef.current?.focus();
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = "hidden";
+		const closeOnEscape = (event: KeyboardEvent) => {
+			if (event.key === "Escape") setIsOpen(false);
+		};
+		window.addEventListener("keydown", closeOnEscape);
+		return () => {
+			document.body.style.overflow = previousOverflow;
+			window.removeEventListener("keydown", closeOnEscape);
+		};
+	}, [isOpen]);
+
+	const links = [
+		["/", "About"],
+		["/projects", "My Projects"],
+		["/notes", "My Notes"],
+	];
+
+	const navLinkClass = (to: string) =>
+		`rounded px-2.5 py-1.5 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${
+			pathname === to
+				? "font-medium text-blue-600"
+				: "text-gray-800 dark:text-gray-100"
+		}`;
 
 	return (
-		<>
-			<HeaderContainer $nightMode={nightMode}>
-				<Title>Xiling Zhao's Site</Title>
-				<MenuButton onClick={toggleMenu} $nightMode={nightMode}>
-					{isMenuOpen ? <FiX /> : <FiMenu />}
-				</MenuButton>
-				<Nav $isOpen={isMenuOpen} $nightMode={nightMode}>
-					<CloseButton onClick={closeMenu} $nightMode={nightMode}>
-						<FiX />
-					</CloseButton>
-					<HeaderLink
-						to="/"
-						text="About"
-						nightMode={nightMode}
-						onClick={closeMenu}
-					/>
-					<HeaderLink
-						to="/projects"
-						text="My Projects"
-						nightMode={nightMode}
-						onClick={closeMenu}
-					/>
-					<HeaderLink
-						to="/notes"
-						text="My Notes"
-						nightMode={nightMode}
-						onClick={closeMenu}
-					/>
-					<ThemeButton onClick={toggleNightMode} $nightMode={nightMode}>
-						{nightMode ? <FiSun /> : <FiMoon />}
-					</ThemeButton>
-				</Nav>
-			</HeaderContainer>
-			<Overlay $isOpen={isMenuOpen} onClick={closeMenu} />
-		</>
+		<header className="relative flex items-center justify-between border-b border-gray-200 bg-white px-5 py-2.5 dark:border-gray-700 dark:bg-[#1a1a1a]">
+			<h1 className="text-base font-medium">Xiling Zhao&apos;s Site</h1>
+			<button
+				type="button"
+				onClick={() => setIsOpen(true)}
+				className="hidden rounded-full p-1.5 max-md:flex"
+				aria-label="Open navigation menu"
+				aria-expanded={isOpen}
+			>
+				<Bars3Icon className="size-5" />
+			</button>
+			<nav
+				aria-label="Primary navigation"
+				className={`flex items-center gap-2.5 max-md:fixed max-md:bottom-0 max-md:right-0 max-md:top-0 max-md:z-20 max-md:w-[250px] max-md:flex-col max-md:bg-white max-md:px-5 max-md:pb-5 max-md:pt-16 max-md:shadow-lg max-md:transition-transform dark:max-md:bg-[#1a1a1a] ${isOpen ? "max-md:translate-x-0" : "max-md:translate-x-full"}`}
+			>
+				<button
+					ref={closeButtonRef}
+					type="button"
+					onClick={() => setIsOpen(false)}
+					className="absolute right-5 top-5 hidden rounded-full p-1.5 max-md:flex"
+					aria-label="Close navigation menu"
+				>
+					<XMarkIcon className="size-5" />
+				</button>
+				{links.map(([to, label]) => (
+					<Link
+						key={to}
+						to={to}
+						className={`${navLinkClass(to)} max-md:w-full max-md:py-2.5 max-md:text-center`}
+					>
+						{label}
+					</Link>
+				))}
+				<button
+					type="button"
+					onClick={toggleNightMode}
+					className="flex rounded-full p-1.5 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+					aria-label={`Switch to ${nightMode ? "light" : "dark"} mode`}
+				>
+					{nightMode ? (
+						<SunIcon className="size-5" />
+					) : (
+						<MoonIcon className="size-5" />
+					)}
+				</button>
+			</nav>
+			{isOpen && (
+				<button
+					type="button"
+					onClick={() => setIsOpen(false)}
+					className="fixed inset-0 z-10 hidden bg-black/50 max-md:block"
+					aria-label="Close navigation menu"
+				/>
+			)}
+		</header>
 	);
 };
 

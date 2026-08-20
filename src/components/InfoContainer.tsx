@@ -1,254 +1,86 @@
-import type React from "react";
-import { useState } from "react";
 import {
-	FaChevronLeft,
-	FaChevronRight,
-	FaEnvelope,
-	FaGithub,
-	FaInstagram,
-	FaLinkedin,
-	FaSchool,
-} from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
-import styled from "styled-components";
-import { colors } from "../theme";
+	ChevronLeftIcon,
+	ChevronRightIcon,
+	EnvelopeIcon,
+	MapPinIcon,
+} from "@heroicons/react/24/outline";
+import { AcademicCapIcon } from "@heroicons/react/24/solid";
+import { useState } from "react";
 
-const InfoContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 25%;
-    gap: 1rem;
+const socialLinks = [
+	["Email", "mailto:xiling.zhao@mail.utoronto.ca"],
+	["Github", "https://github.com/Teinble"],
+	["Instagram", "https://www.instagram.com/willzhao86/"],
+	["LinkedIn", "https://www.linkedin.com/in/xilingzhao/"],
+];
 
-    @media (max-width: 768px) {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        position: relative;
-    }
-`;
-
-const ImageContainer = styled.div`
-    position: relative;
-    width: 90%;
-    margin: 0 auto;
-`;
-
-const ProfileImage = styled.img<{ $nightMode: boolean }>`
-    width: 100%;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    padding: 0.2rem;
-    border-radius: 15px;
-    border: 1px solid ${(props) => (props.$nightMode ? colors.background.light : colors.background.dark)};
-    box-shadow: 0 4px 8px rgba(94, 91, 91, 0.1);
-    transition: opacity 0.3s ease;
-
-    @media (max-width: 768px) {
-        border-radius: 50%;
-        border: 1px solid ${(props) => (props.$nightMode ? colors.background.light : colors.background.dark)};
-        box-shadow: 0 4px 8px rgba(94, 91, 91, 0.1);
-        transition: opacity 0.3s ease;
-    }
-`;
-
-const NavButton = styled.button<{
-	$position: "left" | "right";
-	$nightMode: boolean;
-}>`
-    position: absolute;
-    top: 50%;
-    ${(props) => props.$position}: 0;
-    transform: translateY(-50%);
-    background: 'rgba(255, 255, 255, 0.5)';
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: ${colors.text.light};
-    transition: all 0.3s ease;
-
-    &:hover {
-        background: ${(props) => (props.$nightMode ? "rgba(0, 0, 0, 0.7)" : "rgba(255, 255, 255, 0.7)")};
-    }
-
-    svg {
-        width: 15px;
-        height: 15px;
-    }
-`;
-
-const NameDescriptionContainer = styled.div`
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: flex-start;
-    gap: 1rem;
-
-    @media (max-width: 768px) {
-        gap: 0.5rem;
-`;
-
-const IconContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-
-    @media (max-width: 768px) {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-`;
-
-const Text = styled.p`
-    font-weight: 500;
-    font-size: 1rem;
-
-    @media (max-width: 768px) {
-        font-size: 0.7rem;
-    }
-`;
-
-const NameContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    align-items: center;
-`;
-
-const Title = styled.h1`
-    font-size: 1.5rem;
-    font-weight: 700;
-
-    @media (max-width: 768px) {
-        font-size: 1rem;
-    }
-`;
-
-const Pronoun = styled.p`
-    font-size: 1rem;
-    color: ${colors.text.gray};
-    font-weight: 700;
-
-    @media (max-width: 768px) {
-        font-size: 0.8rem;
-    }
-`;
-
-const IconWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    svg {
-        width: 1rem;
-        height: 1rem;
-    }
-`;
-
-const IconText = styled.p`
-    font-size: 1rem;
-    color: ${colors.text.gray};
-    font-weight: 700;
-
-    @media (max-width: 768px) {
-        font-size: 0.6rem;
-    }
-`;
-
-const Icon = ({
-	icon,
-	text,
-	link = "",
-}: {
-	icon: React.ReactNode;
-	text: string;
-	link?: string;
-}) => {
-	return (
-		<IconWrapper>
-			{icon}
-			{link ? (
-				<a href={link} target="_blank" rel="noopener noreferrer">
-					<IconText>{text}</IconText>
-				</a>
-			) : (
-				<IconText>{text}</IconText>
-			)}
-		</IconWrapper>
-	);
-};
-
-interface InfoContainerProps {
-	nightMode: boolean;
-}
-
-const InfoContainerComponent = ({ nightMode }: InfoContainerProps) => {
-	const [currentImageIndex, setCurrentImageIndex] = useState(0);
+const InfoContainer = ({ nightMode: _nightMode }: { nightMode: boolean }) => {
+	const [currentImage, setCurrentImage] = useState(0);
 	const images = ["/profile1.JPG", "/profile2.JPG", "/profile3.JPG"];
 
-	const nextImage = () => {
-		setCurrentImageIndex((prev) => (prev + 1) % images.length);
-	};
-
-	const prevImage = () => {
-		setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-	};
-
 	return (
-		<InfoContainer>
-			<ImageContainer>
-				<ProfileImage
-					$nightMode={nightMode}
-					src={images[currentImageIndex]}
-					alt="Xiling Zhao profile"
+		<aside className="flex w-1/4 flex-col gap-4 max-md:w-full max-md:flex-row">
+			<div className="relative mx-auto w-[90%] max-md:w-[40%]">
+				<img
+					src={images[currentImage]}
+					alt={`Xiling Zhao profile ${currentImage + 1} of ${images.length}`}
+					className="aspect-square w-full rounded-[15px] border border-gray-800 object-cover p-0.5 shadow-sm max-md:rounded-full dark:border-white"
 				/>
-				<NavButton $position="left" $nightMode={nightMode} onClick={prevImage}>
-					<FaChevronLeft />
-				</NavButton>
-				<NavButton $position="right" $nightMode={nightMode} onClick={nextImage}>
-					<FaChevronRight />
-				</NavButton>
-			</ImageContainer>
-			<NameDescriptionContainer>
-				<NameContainer>
-					<Title>Xiling (Will) Zhao</Title>
-					<Pronoun>He/Him</Pronoun>
-				</NameContainer>
-				<Text>MScAC 27' @ University of Toronto</Text>
-				<Text>Computer Science 25' @ University of Toronto</Text>
-
-				<IconContainer>
-					<Icon icon={<FaSchool />} text="University of Toronto" />
-					<Icon icon={<FaLocationDot />} text="Toronto, ON" />
-					<Icon
-						icon={<FaEnvelope />}
-						text="Email"
-						link="mailto:xiling.zhao@mail.utoronto.ca"
-					/>
-					<Icon
-						icon={<FaGithub />}
-						text="Github"
-						link="https://github.com/Teinble"
-					/>
-					<Icon
-						icon={<FaInstagram />}
-						text="Instagram"
-						link="https://www.instagram.com/willzhao86/"
-					/>
-					<Icon
-						icon={<FaLinkedin />}
-						text="LinkedIn"
-						link="https://www.linkedin.com/in/xilingzhao/"
-					/>
-				</IconContainer>
-			</NameDescriptionContainer>
-		</InfoContainer>
+				<button
+					type="button"
+					onClick={() =>
+						setCurrentImage((currentImage - 1 + images.length) % images.length)
+					}
+					className="absolute left-0 top-1/2 grid size-[30px] -translate-y-1/2 place-items-center rounded-full bg-white/70 text-gray-800 hover:bg-white dark:bg-black/70 dark:text-white"
+					aria-label="Previous profile photo"
+				>
+					<ChevronLeftIcon className="size-4" />
+				</button>
+				<button
+					type="button"
+					onClick={() => setCurrentImage((currentImage + 1) % images.length)}
+					className="absolute right-0 top-1/2 grid size-[30px] -translate-y-1/2 place-items-center rounded-full bg-white/70 text-gray-800 hover:bg-white dark:bg-black/70 dark:text-white"
+					aria-label="Next profile photo"
+				>
+					<ChevronRightIcon className="size-4" />
+				</button>
+			</div>
+			<div className="flex flex-col gap-4 max-md:flex-1 max-md:gap-2">
+				<div className="flex items-center gap-2">
+					<h2 className="text-2xl font-bold max-md:text-base">
+						Xiling (Will) Zhao
+					</h2>
+					<p className="font-bold text-gray-500 max-md:text-xs">He/Him</p>
+				</div>
+				<p className="font-medium max-md:text-[0.7rem]">
+					MScAC 27&apos; @ University of Toronto
+				</p>
+				<p className="font-medium max-md:text-[0.7rem]">
+					Computer Science 25&apos; @ University of Toronto
+				</p>
+				<div className="flex flex-col gap-2 text-sm max-md:flex-row max-md:flex-wrap max-md:gap-2 max-md:text-[0.6rem]">
+					<p className="flex items-center gap-2 font-bold text-gray-500">
+						<AcademicCapIcon className="size-4" /> University of Toronto
+					</p>
+					<p className="flex items-center gap-2 font-bold text-gray-500">
+						<MapPinIcon className="size-4" /> Toronto, ON
+					</p>
+					{socialLinks.map(([label, href]) => (
+						<a
+							key={label}
+							href={href}
+							target="_blank"
+							rel="noreferrer"
+							className="flex items-center gap-2 font-bold text-gray-500 underline"
+						>
+							{label === "Email" && <EnvelopeIcon className="size-4" />}
+							{label}
+						</a>
+					))}
+				</div>
+			</div>
+		</aside>
 	);
 };
 
-export default InfoContainerComponent;
+export default InfoContainer;

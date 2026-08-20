@@ -1,35 +1,8 @@
-import styled from "styled-components";
-import { colors } from "../theme";
-
-const FooterContainer = styled.footer<{ $nightMode: boolean }>`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding: 0.4rem;
-    text-align: center;
-    color: ${(props) => (props.$nightMode ? colors.text.dark : colors.text.light)};
-    font-size: 0.7rem;
-    border-top: 1px solid ${(props) => (props.$nightMode ? colors.border.dark : colors.border.light)};
-`;
-
-interface FooterProps {
-	nightMode: boolean;
-}
-
-const Footer = ({ nightMode }: FooterProps) => {
-	const currentYear = new Date().getFullYear();
-	const lastUpdated = new Date().toLocaleDateString("en-US", {
-		year: "numeric",
-		month: "long",
-		day: "numeric",
-	});
-
-	return (
-		<FooterContainer $nightMode={nightMode}>
-			<p>© {currentYear} Xiling Zhao. All rights reserved.</p>
-			<p>Last updated: {lastUpdated}</p>
-		</FooterContainer>
-	);
-};
+const Footer = ({ nightMode: _nightMode }: { nightMode: boolean }) => (
+	<footer className="flex justify-around border-t border-gray-200 p-1.5 text-center text-[0.7rem] text-gray-800 dark:border-gray-700 dark:text-gray-100">
+		<p>© {new Date().getFullYear()} Xiling Zhao. All rights reserved.</p>
+		<p>Last updated: August 20, 2026</p>
+	</footer>
+);
 
 export default Footer;

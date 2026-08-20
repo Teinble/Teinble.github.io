@@ -1,409 +1,279 @@
 import {
-	FaArrowLeft,
-	FaCalendarAlt,
-	FaCode,
-	FaExternalLinkAlt,
-	FaUniversity,
-	FaUserTie,
-} from "react-icons/fa";
-import {
-	BackButton,
-	BulletItem,
-	BulletList,
-	FeatureCard,
-	FeaturesGrid,
-	MetaItem,
-	ProjectHeader,
-	ProjectLink,
-	ProjectLinks,
-	ProjectMeta,
-	ProjectPageContainer,
-	ProjectSubtitle,
-	ProjectTitle,
-	Section,
-	SectionContent,
-	SectionTitle,
-	TechBadge,
-	TechStack,
-	Timeline,
-	TimelineContent,
-	TimelineDate,
-	TimelineItem,
-} from "../../components/projects/ProjectStyles";
+	ArrowLeftIcon,
+	ArrowTopRightOnSquareIcon,
+	CalendarDaysIcon,
+	CodeBracketIcon,
+	UserIcon,
+} from "@heroicons/react/24/outline";
+import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
 
-interface IQBankProps {
-	nightMode: boolean;
-}
+const frontendTech = [
+	"React 19",
+	"TypeScript",
+	"Vite",
+	"React Router v7",
+	"TanStack Query",
+	"Tailwind CSS",
+	"DaisyUI",
+	"Axios",
+];
+const backendTech = [
+	"Node.js",
+	"Express",
+	"TypeScript",
+	"Prisma ORM",
+	"PostgreSQL",
+	"Zod",
+	"JWT",
+	"Cloudflare Storage",
+];
 
-const IQBank = ({ nightMode }: IQBankProps) => {
-	const frontendTech = [
-		"React 19",
-		"TypeScript",
-		"Vite",
-		"React Router v7",
-		"TanStack Query",
-		"Tailwind CSS",
-		"DaisyUI",
-		"Axios",
-	];
+const features = [
+	[
+		"Role-Based Access Control",
+		"Multi-level permissions with global and course-specific roles.",
+	],
+	[
+		"Real-Time Discussions",
+		"Interactive Q&A threads supporting collaborative learning.",
+	],
+	[
+		"PDF Question Management",
+		"Questions can be created and organized directly on exam PDFs.",
+	],
+	[
+		"Statistics & Analytics",
+		"Engagement metrics help instructors understand participation.",
+	],
+	[
+		"Collection Management",
+		"Course materials and question banks stay organized.",
+	],
+	[
+		"Topic Categorization",
+		"Topics make content easier to retrieve and review.",
+	],
+];
 
-	const backendTech = [
-		"Node.js",
-		"Express",
-		"TypeScript",
-		"Prisma ORM",
-		"PostgreSQL",
-		"Zod",
-		"JWT",
-		"Cloudflare Storage",
-	];
+const Section = ({
+	title,
+	children,
+}: {
+	title: string;
+	children: ReactNode;
+}) => (
+	<section className="mb-12 max-md:mb-8">
+		<h2 className="mb-4 border-b border-gray-200 pb-2 text-2xl font-semibold dark:border-gray-700">
+			{title}
+		</h2>
+		<div className="leading-7 text-gray-500 dark:text-white/80">{children}</div>
+	</section>
+);
 
-	const keyFeatures = [
-		{
-			title: "Role-Based Access Control",
-			description:
-				"Multi-level permission system with global and course-specific roles for secure content management",
-		},
-		{
-			title: "Real-Time Discussions",
-			description:
-				"Interactive Q&A platform enabling collaborative learning through real-time discussion threads",
-		},
-		{
-			title: "PDF Question Management",
-			description:
-				"Advanced system for managing and organizing PDF-based exam questions and study materials",
-		},
-		{
-			title: "Statistics & Analytics",
-			description:
-				"Comprehensive analytics dashboard tracking student engagement and learning outcomes",
-		},
-		{
-			title: "Collection Management",
-			description:
-				"Organized system for curating and managing course materials and question banks",
-		},
-		{
-			title: "Topic Categorization",
-			description:
-				"Smart categorization system for efficient content organization and retrieval",
-		},
-	];
+const BulletList = ({ children }: { children: ReactNode }) => (
+	<ul className="my-4 space-y-3">{children}</ul>
+);
+const Bullet = ({ children }: { children: ReactNode }) => (
+	<li className="relative pl-6 before:absolute before:left-0 before:font-bold before:text-blue-600 before:content-['▸']">
+		{children}
+	</li>
+);
 
-	return (
-		<ProjectPageContainer $nightMode={nightMode}>
-			<BackButton to="/projects" $nightMode={nightMode}>
-				<FaArrowLeft />
-				Back to Projects
-			</BackButton>
-			<ProjectHeader $nightMode={nightMode}>
-				<ProjectTitle $nightMode={nightMode}>IQBank</ProjectTitle>
-				<ProjectSubtitle $nightMode={nightMode}>
-					Educational Q&A Platform for University Students
-				</ProjectSubtitle>
-				<ProjectMeta>
-					<MetaItem $nightMode={nightMode}>
-						<FaCalendarAlt />
-						<span>May 2025 - Present</span>
-					</MetaItem>
-					<MetaItem $nightMode={nightMode}>
-						<FaUserTie />
-						<span>Founder & Lead Developer</span>
-					</MetaItem>
-					<MetaItem $nightMode={nightMode}>
-						<FaUniversity />
-						<span>University of Toronto</span>
-					</MetaItem>
-					<MetaItem $nightMode={nightMode}>
-						<FaCode />
-						<span>Full Stack Development</span>
-					</MetaItem>
-				</ProjectMeta>
-				<ProjectLinks>
-					<ProjectLink
-						href="https://iqbank.teach.cs.toronto.edu"
-						target="_blank"
-						$nightMode={nightMode}
+const IQBank = ({ nightMode: _nightMode }: { nightMode: boolean }) => (
+	<div className="mx-auto max-w-[1200px] p-8 max-md:p-4">
+		<Link
+			to="/projects"
+			className="mb-8 inline-flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 font-medium transition-transform hover:-translate-x-1 dark:border-gray-700"
+		>
+			<ArrowLeftIcon className="size-5" /> Back to Projects
+		</Link>
+
+		<header className="mb-12 border-b-2 border-gray-200 pb-8 dark:border-gray-700">
+			<h1 className="mb-4 text-5xl font-bold max-md:text-3xl">IQBank</h1>
+			<p className="mb-6 text-xl text-gray-500 max-md:text-base">
+				Educational Q&amp;A Platform for University Students
+			</p>
+			<div className="mt-4 flex flex-wrap gap-8 text-gray-500 max-md:gap-4 max-md:text-sm">
+				<p className="flex items-center gap-2">
+					<CalendarDaysIcon className="size-5" /> May 2025 - Present
+				</p>
+				<p className="flex items-center gap-2">
+					<UserIcon className="size-5" /> Founder &amp; Lead Developer
+				</p>
+				<p className="flex items-center gap-2">
+					<CodeBracketIcon className="size-5" /> Full Stack Development
+				</p>
+			</div>
+			<a
+				href="https://iqbank.teach.cs.toronto.edu"
+				target="_blank"
+				rel="noreferrer"
+				className="mt-8 inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-black/[0.02] px-6 py-3 font-medium dark:border-gray-700 dark:bg-white/10"
+			>
+				<ArrowTopRightOnSquareIcon className="size-5" /> Live Demo
+			</a>
+		</header>
+
+		<Section title="Overview">
+			<p>
+				IQBank is an educational platform designed to improve how university
+				students prepare for exams and collaborate on academic content. It
+				provides a centralized home for past exams, structured questions,
+				discussions, and study resources.
+			</p>
+		</Section>
+
+		<Section title="Problem Statement">
+			<BulletList>
+				<Bullet>
+					Students lack a centralized platform for accessing and organizing past
+					exam papers.
+				</Bullet>
+				<Bullet>
+					Static PDF files make collaborative discussion and knowledge sharing
+					difficult.
+				</Bullet>
+				<Bullet>
+					Students need better ways to identify topics and revisit knowledge
+					gaps.
+				</Bullet>
+				<Bullet>
+					Instructors need practical tools for organizing course material and
+					recognizing contributors.
+				</Bullet>
+			</BulletList>
+		</Section>
+
+		<Section title="Solution & Impact">
+			<BulletList>
+				<Bullet>
+					<strong className="text-gray-800 dark:text-gray-100">
+						Centralized repository:
+					</strong>{" "}
+					Past exams and study material are organized by course and topic.
+				</Bullet>
+				<Bullet>
+					<strong className="text-gray-800 dark:text-gray-100">
+						PDF-native workflow:
+					</strong>{" "}
+					Coordinate-based question creation makes annotation roughly 10× faster
+					than a traditional form.
+				</Bullet>
+				<Bullet>
+					<strong className="text-gray-800 dark:text-gray-100">
+						Collaborative learning:
+					</strong>{" "}
+					Discussion and endorsement features help students learn from one
+					another.
+				</Bullet>
+				<Bullet>
+					<strong className="text-gray-800 dark:text-gray-100">
+						Team delivery:
+					</strong>{" "}
+					An eight-person development team supports a platform serving more than
+					400 students.
+				</Bullet>
+			</BulletList>
+		</Section>
+
+		<Section title="Key Features">
+			<div className="my-6 grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6 max-md:grid-cols-1 max-md:gap-4">
+				{features.map(([title, description]) => (
+					<div
+						key={title}
+						className="rounded-lg border border-gray-200 bg-black/[0.02] p-6 dark:border-gray-700 dark:bg-white/5"
 					>
-						<FaExternalLinkAlt />
-						Live Demo
-					</ProjectLink>
-				</ProjectLinks>
-			</ProjectHeader>
+						<h3 className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100">
+							{title}
+						</h3>
+						<p className="text-sm leading-6">{description}</p>
+					</div>
+				))}
+			</div>
+		</Section>
 
-			<Section>
-				<SectionTitle $nightMode={nightMode}>Overview</SectionTitle>
-				<SectionContent $nightMode={nightMode}>
-					IQBank is a comprehensive educational platform designed to
-					revolutionize how university students prepare for exams and
-					collaborate on academic content. Built with a modern tech stack and
-					following enterprise-level architecture patterns, the platform serves
-					as a centralized repository for past exam papers, study resources, and
-					interactive learning tools.
-				</SectionContent>
-			</Section>
-
-			<Section>
-				<SectionTitle $nightMode={nightMode}>Problem Statement</SectionTitle>
-				<SectionContent $nightMode={nightMode}>
-					<BulletList>
-						<BulletItem $nightMode={nightMode}>
-							Students lack a centralized platform for accessing and organizing
-							past exam papers
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							Difficulty in collaborative learning and knowledge sharing among
-							peers
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							No effective system for tracking learning progress and identifying
-							knowledge gaps
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							Limited tools for instructors to manage and distribute course
-							materials efficiently
-						</BulletItem>
-					</BulletList>
-				</SectionContent>
-			</Section>
-
-			<Section>
-				<SectionTitle $nightMode={nightMode}>Solution & Impact</SectionTitle>
-				<SectionContent $nightMode={nightMode}>
-					Developed a full-stack web application that addresses these challenges
-					through:
-					<BulletList>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Centralized Repository:</strong> Created a comprehensive
-							database of past exams, assignments, and study materials
-							accessible to all registered students
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Interactive Learning:</strong> Implemented real-time
-							discussion forums and Q&A features to facilitate peer-to-peer
-							learning
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Performance Analytics:</strong> Built analytics dashboard
-							providing insights into study patterns and performance metrics
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Scalable Architecture:</strong> Designed with
-							microservices pattern to handle growing user base and content
-							volume
-						</BulletItem>
-					</BulletList>
-				</SectionContent>
-			</Section>
-
-			<Section>
-				<SectionTitle $nightMode={nightMode}>Key Features</SectionTitle>
-				<FeaturesGrid>
-					{keyFeatures.map((feature) => (
-						<FeatureCard key={feature.title} $nightMode={nightMode}>
-							<h4>{feature.title}</h4>
-							<p>{feature.description}</p>
-						</FeatureCard>
-					))}
-				</FeaturesGrid>
-			</Section>
-
-			<Section>
-				<SectionTitle $nightMode={nightMode}>
-					Technical Architecture
-				</SectionTitle>
-				<SectionContent $nightMode={nightMode}>
-					<h4
-						style={{
-							marginTop: "1rem",
-							marginBottom: "0.5rem",
-							fontWeight: 600,
-						}}
+		<Section title="Technical Architecture">
+			<h3 className="mb-2 mt-4 font-semibold text-gray-800 dark:text-gray-100">
+				Frontend Stack
+			</h3>
+			<div className="my-4 flex flex-wrap">
+				{frontendTech.map((tech) => (
+					<span
+						key={tech}
+						className="m-1 rounded-full border border-gray-200 bg-black/5 px-3 py-1 text-sm text-gray-800 dark:border-gray-700 dark:bg-white/10 dark:text-gray-100"
 					>
-						Frontend Stack
-					</h4>
-					<TechStack>
-						{frontendTech.map((tech) => (
-							<TechBadge key={tech} $nightMode={nightMode}>
-								{tech}
-							</TechBadge>
-						))}
-					</TechStack>
-
-					<h4
-						style={{
-							marginTop: "1.5rem",
-							marginBottom: "0.5rem",
-							fontWeight: 600,
-						}}
+						{tech}
+					</span>
+				))}
+			</div>
+			<h3 className="mb-2 mt-6 font-semibold text-gray-800 dark:text-gray-100">
+				Backend Stack
+			</h3>
+			<div className="my-4 flex flex-wrap">
+				{backendTech.map((tech) => (
+					<span
+						key={tech}
+						className="m-1 rounded-full border border-gray-200 bg-black/5 px-3 py-1 text-sm text-gray-800 dark:border-gray-700 dark:bg-white/10 dark:text-gray-100"
 					>
-						Backend Stack
-					</h4>
-					<TechStack>
-						{backendTech.map((tech) => (
-							<TechBadge key={tech} $nightMode={nightMode}>
-								{tech}
-							</TechBadge>
-						))}
-					</TechStack>
-				</SectionContent>
-			</Section>
+						{tech}
+					</span>
+				))}
+			</div>
+		</Section>
 
-			<Section>
-				<SectionTitle $nightMode={nightMode}>
-					Architecture Patterns
-				</SectionTitle>
-				<SectionContent $nightMode={nightMode}>
-					<BulletList>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Feature-Based Architecture:</strong> Organized frontend
-							code by features for better maintainability and scalability
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Controller-Service-Repository Pattern:</strong>{" "}
-							Implemented layered backend architecture ensuring separation of
-							concerns
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Type-Safe API Communication:</strong> Shared TypeScript
-							interfaces between frontend and backend for compile-time safety
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Two-Level Authorization:</strong> Implemented global and
-							course-specific permission system for granular access control
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Clean Code Principles:</strong> Enforced consistent coding
-							standards using Biome linter and comprehensive testing strategy
-						</BulletItem>
-					</BulletList>
-				</SectionContent>
-			</Section>
+		<Section title="Architecture Patterns">
+			<BulletList>
+				<Bullet>
+					<strong className="text-gray-800 dark:text-gray-100">
+						Feature-based frontend:
+					</strong>{" "}
+					Product capabilities are organized into focused modules.
+				</Bullet>
+				<Bullet>
+					<strong className="text-gray-800 dark:text-gray-100">
+						Controller-service-repository backend:
+					</strong>{" "}
+					Layers keep responsibilities separated.
+				</Bullet>
+				<Bullet>
+					<strong className="text-gray-800 dark:text-gray-100">
+						Type-safe communication:
+					</strong>{" "}
+					Shared TypeScript contracts reduce API drift.
+				</Bullet>
+				<Bullet>
+					<strong className="text-gray-800 dark:text-gray-100">
+						Two-level authorization:
+					</strong>{" "}
+					Global and course permissions provide granular access control.
+				</Bullet>
+			</BulletList>
+		</Section>
 
-			<Section>
-				<SectionTitle $nightMode={nightMode}>
-					Development Methodology
-				</SectionTitle>
-				<SectionContent $nightMode={nightMode}>
-					<BulletList>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Agile Development:</strong> Implemented sprint-based
-							development with bi-weekly releases
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							<strong>CI/CD Pipeline:</strong> Automated testing and deployment
-							using GitHub Actions
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Code Review Process:</strong> Mandatory peer reviews for
-							all pull requests
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Test-Driven Development:</strong> Maintained 80%+ test
-							coverage for critical business logic
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							<strong>Documentation First:</strong> Comprehensive API
-							documentation and developer onboarding guides
-						</BulletItem>
-					</BulletList>
-				</SectionContent>
-			</Section>
-
-			<Section>
-				<SectionTitle $nightMode={nightMode}>Project Timeline</SectionTitle>
-				<Timeline $nightMode={nightMode}>
-					<TimelineItem $nightMode={nightMode}>
-						<TimelineDate $nightMode={nightMode}>May 2025</TimelineDate>
-						<TimelineContent $nightMode={nightMode}>
-							Project inception and initial architecture design
-						</TimelineContent>
-					</TimelineItem>
-					<TimelineItem $nightMode={nightMode}>
-						<TimelineDate $nightMode={nightMode}>June 2025</TimelineDate>
-						<TimelineContent $nightMode={nightMode}>
-							Core authentication and authorization system implementation
-						</TimelineContent>
-					</TimelineItem>
-					<TimelineItem $nightMode={nightMode}>
-						<TimelineDate $nightMode={nightMode}>July 2025</TimelineDate>
-						<TimelineContent $nightMode={nightMode}>
-							PDF management system and question bank features
-						</TimelineContent>
-					</TimelineItem>
-					<TimelineItem $nightMode={nightMode}>
-						<TimelineDate $nightMode={nightMode}>August 2025</TimelineDate>
-						<TimelineContent $nightMode={nightMode}>
-							Real-time discussion forums and Q&A functionality
-						</TimelineContent>
-					</TimelineItem>
-					<TimelineItem $nightMode={nightMode}>
-						<TimelineDate $nightMode={nightMode}>
-							September 2025 - Present
-						</TimelineDate>
-						<TimelineContent $nightMode={nightMode}>
-							Analytics dashboard, performance optimization, and continuous
-							feature development
-						</TimelineContent>
-					</TimelineItem>
-				</Timeline>
-			</Section>
-
-			<Section>
-				<SectionTitle $nightMode={nightMode}>
-					Achievements & Metrics
-				</SectionTitle>
-				<SectionContent $nightMode={nightMode}>
-					<BulletList>
-						<BulletItem $nightMode={nightMode}>
-							Successfully onboarded 500+ active users within the first month of
-							launch
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							Achieved 99.9% uptime with sub-200ms average API response time
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							Maintained 85% test coverage across frontend and backend codebases
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							Received positive feedback from 90% of surveyed users on platform
-							usability
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							Successfully scaled to handle 10,000+ concurrent users during exam
-							periods
-						</BulletItem>
-					</BulletList>
-				</SectionContent>
-			</Section>
-
-			<Section>
-				<SectionTitle $nightMode={nightMode}>Future Roadmap</SectionTitle>
-				<SectionContent $nightMode={nightMode}>
-					<BulletList>
-						<BulletItem $nightMode={nightMode}>
-							AI-powered question recommendation system based on learning
-							patterns
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							Mobile application development for iOS and Android platforms
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							Integration with university LMS systems for seamless data
-							synchronization
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							Advanced analytics with predictive modeling for exam performance
-						</BulletItem>
-						<BulletItem $nightMode={nightMode}>
-							Expansion to other universities across Canada
-						</BulletItem>
-					</BulletList>
-				</SectionContent>
-			</Section>
-		</ProjectPageContainer>
-	);
-};
+		<Section title="Project Timeline">
+			<div className="border-l-2 border-gray-200 pl-8 dark:border-gray-700">
+				{[
+					["May 2025", "Project inception and initial architecture design"],
+					["June 2025", "Core authentication and authorization implementation"],
+					["July 2025", "PDF management and question-bank features"],
+					["August 2025", "Discussion and Q&A functionality"],
+					[
+						"September 2025 - Present",
+						"Analytics, performance, and continuous feature development",
+					],
+				].map(([date, description]) => (
+					<div
+						key={date}
+						className="relative mb-8 before:absolute before:-left-[2.4rem] before:top-2 before:size-3 before:rounded-full before:bg-blue-600"
+					>
+						<p className="mb-2 text-sm font-semibold">{date}</p>
+						<p>{description}</p>
+					</div>
+				))}
+			</div>
+		</Section>
+	</div>
+);
 
 export default IQBank;
