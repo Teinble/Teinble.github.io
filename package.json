@@ -5,7 +5,7 @@
 	"type": "module",
 	"homepage": "https://Teinble.github.io/",
 	"engines": {
-		"node": ">=18"
+		"node": "24.x"
 	},
 	"dependencies": {
 		"@heroicons/react": "^2.2.0",
@@ -40,8 +40,7 @@
 		"lint": "biome check",
 		"lint:fix": "biome check --write",
 		"predeploy": "vite build",
-		"deploy": "gh-pages -d dist",
-		"prepare": "husky"
+		"deploy": "gh-pages -d dist"
 	},
 	"browserslist": {
 		"production": [
