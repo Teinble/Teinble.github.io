@@ -392,7 +392,7 @@ const HomeDashboard = ({ onOpen }: { onOpen: (id: string) => void }) => (
 						["bosonai", "Current ML engineering role", BuildingOffice2Icon],
 						["iqbank", "Previous founder project", BanknotesIcon],
 						["dotfiles", "Portable environment", CodeBracketSquareIcon],
-						["tools", "My daily toolkit", WrenchScrewdriverIcon],
+						["skills", "Agent skills I use daily", SparklesIcon],
 					].map(([id, description, Icon]) => {
 						const CommandIcon = Icon as IconComponent;
 						return (
