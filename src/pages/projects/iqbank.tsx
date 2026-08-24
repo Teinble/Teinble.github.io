@@ -7,6 +7,9 @@ import {
 } from "@heroicons/react/24/outline";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { terminalDocuments } from "../../content/portfolio";
+
+const iqbank = terminalDocuments.iqbank;
 
 const frontendTech = [
 	"React 19",
@@ -90,16 +93,18 @@ const IQBank = ({ nightMode: _nightMode }: { nightMode: boolean }) => (
 		</Link>
 
 		<header className="mb-12 border-b-2 border-gray-200 pb-8 dark:border-gray-700">
-			<h1 className="mb-4 text-5xl font-bold max-md:text-3xl">IQBank</h1>
+			<h1 className="mb-4 text-5xl font-bold max-md:text-3xl">
+				{iqbank.title}
+			</h1>
 			<p className="mb-6 text-xl text-gray-500 max-md:text-base">
 				Educational Q&amp;A Platform for University Students
 			</p>
 			<div className="mt-4 flex flex-wrap gap-8 text-gray-500 max-md:gap-4 max-md:text-sm">
 				<p className="flex items-center gap-2">
-					<CalendarDaysIcon className="size-5" /> May 2025 - Present
+					<CalendarDaysIcon className="size-5" /> {iqbank.meta?.[1]}
 				</p>
 				<p className="flex items-center gap-2">
-					<UserIcon className="size-5" /> Founder &amp; Lead Developer
+					<UserIcon className="size-5" /> {iqbank.meta?.[0]}
 				</p>
 				<p className="flex items-center gap-2">
 					<CodeBracketIcon className="size-5" /> Full Stack Development
@@ -116,12 +121,7 @@ const IQBank = ({ nightMode: _nightMode }: { nightMode: boolean }) => (
 		</header>
 
 		<Section title="Overview">
-			<p>
-				IQBank is an educational platform designed to improve how university
-				students prepare for exams and collaborate on academic content. It
-				provides a centralized home for past exams, structured questions,
-				discussions, and study resources.
-			</p>
+			<p>{iqbank.intro}</p>
 		</Section>
 
 		<Section title="Problem Statement">

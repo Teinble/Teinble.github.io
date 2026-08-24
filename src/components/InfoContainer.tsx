@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { AcademicCapIcon } from "@heroicons/react/24/solid";
 import { type SVGProps, useState } from "react";
+import { education } from "../content/portfolio";
 
 const GitHubIcon = (props: SVGProps<SVGSVGElement>) => (
 	<svg
@@ -114,10 +115,10 @@ const InfoContainer = ({ nightMode: _nightMode }: { nightMode: boolean }) => {
 					<p className="font-bold text-gray-500 max-md:text-xs">He/Him</p>
 				</div>
 				<p className="font-medium max-md:text-[0.7rem]">
-					MScAC 27&apos; @ University of Toronto
+					{education.graduate.short} @ University of Toronto
 				</p>
 				<p className="font-medium max-md:text-[0.7rem]">
-					Computer Science 25&apos; @ University of Toronto
+					{education.undergraduate.short} @ University of Toronto
 				</p>
 				<div className="flex flex-col gap-2 text-sm max-md:flex-row max-md:flex-wrap max-md:gap-2 max-md:text-[0.6rem]">
 					<p className="flex items-center gap-2 font-bold text-gray-500">

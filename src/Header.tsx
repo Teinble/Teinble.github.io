@@ -1,5 +1,6 @@
 import {
 	Bars3Icon,
+	CommandLineIcon,
 	MoonIcon,
 	SunIcon,
 	XMarkIcon,
@@ -9,10 +10,15 @@ import { Link, useLocation } from "react-router-dom";
 
 interface HeaderProps {
 	nightMode: boolean;
+	onShowTerminal: () => void;
 	toggleNightMode: () => void;
 }
 
-const Header = ({ nightMode, toggleNightMode }: HeaderProps) => {
+const Header = ({
+	nightMode,
+	onShowTerminal,
+	toggleNightMode,
+}: HeaderProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { pathname } = useLocation();
 	const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -41,6 +47,7 @@ const Header = ({ nightMode, toggleNightMode }: HeaderProps) => {
 		["/", "About"],
 		["/projects", "My Projects"],
 		["/notes", "My Notes"],
+		["/resources", "Resources"],
 	];
 
 	const navLinkClass = (to: string) =>
@@ -84,6 +91,14 @@ const Header = ({ nightMode, toggleNightMode }: HeaderProps) => {
 						{label}
 					</Link>
 				))}
+				<button
+					type="button"
+					onClick={onShowTerminal}
+					className="flex items-center gap-1.5 rounded px-2.5 py-1.5 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 max-md:w-full max-md:justify-center max-md:py-2.5"
+				>
+					<CommandLineIcon className="size-5" />
+					Terminal
+				</button>
 				<button
 					type="button"
 					onClick={toggleNightMode}

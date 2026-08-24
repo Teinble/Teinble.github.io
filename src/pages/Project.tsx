@@ -1,4 +1,7 @@
 import ProjectCard from "../components/ProjectCard";
+import { terminalDocuments } from "../content/portfolio";
+
+const iqbank = terminalDocuments.iqbank;
 
 export const Project = ({ nightMode }: { nightMode: boolean }) => (
 	<div>
@@ -7,11 +10,11 @@ export const Project = ({ nightMode }: { nightMode: boolean }) => (
 		</h1>
 		<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8 max-md:grid-cols-1 max-md:gap-6">
 			<ProjectCard
-				title="IQbank"
+				title={iqbank.title}
 				backgroundImage="/iqbank.png"
-				timeline="May 2025 - Present"
-				roleLabel="Founder"
-				shortDescription="A collaborative exam preparation platform for university students, featuring past exam papers, interactive questions, and study resources."
+				timeline={iqbank.meta?.[1] ?? "May 2025"}
+				roleLabel={iqbank.meta?.[0] ?? "Founder"}
+				shortDescription={iqbank.intro}
 				projectSlug="iqbank"
 				nightMode={nightMode}
 			/>

@@ -5,10 +5,40 @@
 
 :root {
 	color-scheme: light;
+	--term-bg: #fbfbfb;
+	--term-chrome: #f1f1f5;
+	--term-panel: #f5f5f8;
+	--term-selection: #e7e7ef;
+	--term-border: #d4d4df;
+	--term-text: #403f53;
+	--term-heading: #22213a;
+	--term-muted: #76758d;
+	--term-blue: #4876d6;
+	--term-purple: #994cc3;
+	--term-cyan: #0c969b;
+	--term-green: #08916a;
+	--term-yellow: #c96765;
+	--term-red: #aa0982;
+	--term-cursor: #403f53;
 }
 
 :root.dark {
 	color-scheme: dark;
+	--term-bg: #011627;
+	--term-chrome: #071d2e;
+	--term-panel: #0b2942;
+	--term-selection: #173f5f;
+	--term-border: #214b66;
+	--term-text: #d6deeb;
+	--term-heading: #f0f6fc;
+	--term-muted: #7e9ab0;
+	--term-blue: #82aaff;
+	--term-purple: #c792ea;
+	--term-cyan: #7fdbca;
+	--term-green: #addb67;
+	--term-yellow: #ecc48d;
+	--term-red: #ff5874;
+	--term-cursor: #80a4c2;
 }
 
 html {
@@ -35,6 +65,39 @@ body {
 ::selection {
 	background: #bfdbfe;
 	color: #1f2937;
+}
+
+.terminal-app ::selection {
+	background: var(--term-purple);
+	color: var(--term-bg);
+}
+
+.terminal-main-panel {
+	container: terminal-main / inline-size;
+}
+
+@container terminal-main (min-width: 60rem) {
+	.home-dashboard {
+		display: grid;
+		grid-template-columns: minmax(0, 1.1fr) minmax(19rem, 0.9fr);
+		column-gap: 1rem;
+		row-gap: 1rem;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
+	}
+
+	.home-dashboard-prompt {
+		grid-column: 1 / -1;
+	}
+
+	.home-dashboard-profile,
+	.home-dashboard-activity {
+		margin-top: 0;
+	}
+
+	.home-dashboard-quick {
+		margin-top: 1rem;
+	}
 }
 
 :focus-visible {
