@@ -143,15 +143,16 @@ describe("portfolio modes", () => {
 		).toHaveAttribute("href", "https://arxiv.org/abs/2607.20460");
 	});
 
-	it("persists the selected color theme", async () => {
+	it("starts with the system color theme and allows a session toggle", async () => {
 		const user = userEvent.setup();
 		render(<App />);
 
+		expect(document.documentElement).not.toHaveClass("dark");
 		await user.click(
-			screen.getByRole("button", { name: "Switch to light theme" }),
+			screen.getByRole("button", { name: "Switch to dark theme" }),
 		);
 
-		expect(document.documentElement).not.toHaveClass("dark");
-		expect(window.localStorage.getItem("theme")).toBe("light");
+		expect(document.documentElement).toHaveClass("dark");
+		expect(window.localStorage.getItem("theme")).toBeNull();
 	});
 });

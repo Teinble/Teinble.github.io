@@ -41,6 +41,7 @@ const GithubActivity = ({
 		left: number;
 	} | null>(null);
 	const graphRef = useRef<HTMLDivElement>(null);
+	const activityScrollRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const controller = new AbortController();
@@ -74,6 +75,46 @@ const GithubActivity = ({
 			...days,
 		];
 	}, [days]);
+	const monthSegments = useMemo(() => {
+		if (days.length === 0) return [];
+		const leadingDays = new Date(`${days[0].date}T00:00:00Z`).getUTCDay();
+		const starts: Array<{ key: string; label: string; startWeek: number }> = [];
+		let previousMonth = "";
+		days.forEach((day, index) => {
+			const month = day.date.slice(0, 7);
+			if (month === previousMonth) return;
+			starts.push({
+				key: month,
+				label: new Intl.DateTimeFormat("en", {
+					month: "short",
+					timeZone: "UTC",
+				}).format(new Date(`${day.date}T00:00:00Z`)),
+				startWeek: Math.floor((leadingDays + index) / 7),
+			});
+			previousMonth = month;
+		});
+		const weekCount = Math.ceil((leadingDays + days.length) / 7);
+		const visibleStarts = starts.filter(
+			(month, index) => starts[index + 1]?.startWeek !== month.startWeek,
+		);
+		return visibleStarts.map((month, index) => ({
+			...month,
+			span:
+				(visibleStarts[index + 1]?.startWeek ?? weekCount) - month.startWeek,
+		}));
+	}, [days]);
+	const weekCount = Math.max(1, Math.ceil(calendar.length / 7));
+
+	useEffect(() => {
+		if (state !== "ready" || days.length === 0) return;
+		const frame = window.requestAnimationFrame(() => {
+			if (activityScrollRef.current) {
+				activityScrollRef.current.scrollLeft =
+					activityScrollRef.current.scrollWidth;
+			}
+		});
+		return () => window.cancelAnimationFrame(frame);
+	}, [days.length, state]);
 
 	const total = useMemo(
 		() => days.reduce((sum, day) => sum + day.count, 0),
@@ -137,11 +178,37 @@ const GithubActivity = ({
 							</div>
 						)}
 						<div
+							ref={activityScrollRef}
 							className="overflow-x-auto pb-2"
 							onScroll={() => setTooltip(null)}
 						>
 							<div
-								className={`grid min-w-max grid-flow-col grid-rows-7 ${compact ? "gap-0.5" : "gap-1"}`}
+								className="mb-1 grid h-3 min-w-max text-[9px] leading-3 text-[var(--term-muted)]"
+								style={{
+									gridTemplateColumns: `repeat(${weekCount}, ${compact ? "0.5rem" : "0.625rem"})`,
+									columnGap: compact ? "0.125rem" : "0.25rem",
+								}}
+								aria-hidden="true"
+							>
+								{monthSegments.map((month) => (
+									<span
+										key={month.key}
+										className="truncate"
+										style={{
+											gridColumn: `${month.startWeek + 1} / span ${month.span}`,
+										}}
+									>
+										{month.label}
+									</span>
+								))}
+							</div>
+							<div
+								className="grid min-w-max grid-flow-col grid-rows-7"
+								style={{
+									gridAutoColumns: compact ? "0.5rem" : "0.625rem",
+									columnGap: compact ? "0.125rem" : "0.25rem",
+									rowGap: compact ? "0.125rem" : "0.25rem",
+								}}
 							>
 								{calendar.map((day) =>
 									"date" in day ? (

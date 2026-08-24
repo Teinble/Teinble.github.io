@@ -112,11 +112,11 @@ const SidebarGroup = ({
 	label: string;
 	onSelect: (item: PortfolioItem) => void;
 }) => (
-	<section className="border-b border-[var(--term-border)] py-3 last:border-b-0">
-		<h2 className="px-4 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--term-muted)]">
+	<section className="border-b border-[var(--term-border)] py-2 last:border-b-0">
+		<h2 className="px-3 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--term-muted)]">
 			{label}
 		</h2>
-		<div className="space-y-0.5 px-2">
+		<div className="px-1.5">
 			{items.map((item) => {
 				const Icon = itemIcons[item.id] ?? FolderIcon;
 				return (
@@ -124,16 +124,16 @@ const SidebarGroup = ({
 						key={item.id}
 						type="button"
 						onClick={() => onSelect(item)}
-						className={`group flex w-full items-center gap-3 rounded-sm px-3 py-2.5 text-left transition-colors hover:bg-[var(--term-selection)] ${
+						className={`group flex w-full items-center gap-2 rounded-sm px-2.5 py-1.5 text-left transition-colors hover:bg-[var(--term-selection)] ${
 							activeId === item.id ? "bg-[var(--term-selection)]" : ""
 						}`}
 					>
-						<Icon className="size-[18px] shrink-0 text-[var(--term-blue)]" />
+						<Icon className="size-4 shrink-0 text-[var(--term-blue)]" />
 						<span className="min-w-0 flex-1">
-							<span className="block text-[13px] font-bold text-[var(--term-text)]">
+							<span className="block text-xs font-bold leading-4 text-[var(--term-text)]">
 								{item.label}
 							</span>
-							<span className="block truncate text-[11px] text-[var(--term-muted)]">
+							<span className="block truncate text-[10px] leading-3.5 text-[var(--term-muted)]">
 								{item.detail}
 							</span>
 						</span>
@@ -752,11 +752,11 @@ const TerminalShell = ({
 				}}
 			>
 				<aside className="hidden h-full min-h-0 overflow-y-auto overscroll-contain bg-[var(--term-panel)] md:block">
-					<div className="border-b border-[var(--term-border)] px-4 py-3">
+					<div className="border-b border-[var(--term-border)] px-3 py-2">
 						<p className="text-[10px] uppercase tracking-[0.2em] text-[var(--term-muted)]">
 							workspace
 						</p>
-						<p className="mt-1 text-sm font-bold text-[var(--term-heading)]">
+						<p className="mt-0.5 text-[13px] font-bold text-[var(--term-heading)]">
 							xiling.dev
 						</p>
 					</div>
@@ -772,11 +772,11 @@ const TerminalShell = ({
 						label="Resources"
 						onSelect={selectItem}
 					/>
-					<div className="px-4 py-3 text-[11px] leading-5 text-[var(--term-muted)]">
-						<p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.16em]">
+					<div className="px-3 py-2 text-[10px] leading-4 text-[var(--term-muted)]">
+						<p className="mb-1 text-[9px] font-bold uppercase tracking-[0.16em]">
 							Status
 						</p>
-						<div className="flex flex-wrap gap-x-3 gap-y-0.5">
+						<div className="flex flex-wrap gap-x-2.5">
 							<span>
 								<i className="mr-1.5 inline-block size-1.5 rounded-full bg-[var(--term-green)]" />
 								current
@@ -798,7 +798,7 @@ const TerminalShell = ({
 								exploring
 							</span>
 						</div>
-						<p className="mt-2 border-t border-[var(--term-border)] pt-2 text-[10px] leading-4">
+						<p className="mt-1.5 border-t border-[var(--term-border)] pt-1.5 text-[9px] leading-3.5">
 							<span className="text-[var(--term-purple)]">zsh/agnoster</span>
 							{" · "}night owl {nightMode ? "dark" : "light"}
 							{" · "}Toronto/EDT

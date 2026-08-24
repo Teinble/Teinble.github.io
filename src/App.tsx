@@ -7,9 +7,9 @@ type Theme = "light" | "dark";
 type ViewMode = "terminal" | "plain";
 
 const getInitialTheme = (): Theme => {
-	const savedTheme = window.localStorage.getItem("theme");
-	if (savedTheme === "light" || savedTheme === "dark") return savedTheme;
-	return "dark";
+	return window.matchMedia("(prefers-color-scheme: dark)").matches
+		? "dark"
+		: "light";
 };
 
 const App = () => {
@@ -20,8 +20,15 @@ const App = () => {
 
 	useEffect(() => {
 		document.documentElement.classList.toggle("dark", theme === "dark");
-		window.localStorage.setItem("theme", theme);
 	}, [theme]);
+
+	useEffect(() => {
+		const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+		const applySystemTheme = (event: MediaQueryListEvent) =>
+			setTheme(event.matches ? "dark" : "light");
+		systemTheme.addEventListener("change", applySystemTheme);
+		return () => systemTheme.removeEventListener("change", applySystemTheme);
+	}, []);
 
 	useEffect(() => {
 		window.localStorage.setItem("view-mode", viewMode);
