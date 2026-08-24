@@ -1,12 +1,6 @@
 import { terminalDocuments } from "../content/portfolio";
 
-const resourceIds = [
-	"dotfiles",
-	"mac-setup",
-	"linux-setup",
-	"tools",
-	"skills",
-] as const;
+const resourceIds = ["dotfiles", "mac-setup", "linux-setup", "tools"] as const;
 
 const Resources = () => (
 	<div className="mx-auto max-w-[1200px] p-8 max-md:p-4">
@@ -14,8 +8,8 @@ const Resources = () => (
 			Setup &amp; Resources
 		</h1>
 		<p className="mb-7 max-w-3xl leading-7 text-gray-500">
-			The portable setup notes, tools, and recently explored skills shown in
-			Terminal mode—presented here in the original website style.
+			The portable setup notes and tools shown in Terminal mode—presented here
+			in the original website style.
 		</p>
 		<div className="grid gap-4 lg:grid-cols-2">
 			{resourceIds.map((id) => {

@@ -1,9 +1,10 @@
 import { useId } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Footer from "../../components/Footer";
 import InfoContainer from "../../components/InfoContainer";
 import Header from "../../Header";
 import About from "../../pages/About";
+import AgentSkills from "../../pages/AgentSkills";
 import Notes from "../../pages/Notes";
 import NotFound from "../../pages/NotFound";
 import { Project } from "../../pages/Project";
@@ -22,6 +23,8 @@ const PlainShell = ({
 	onToggleTheme,
 }: PlainShellProps) => {
 	const mainId = useId();
+	const { pathname } = useLocation();
+	const skillsPage = pathname === "/skills";
 
 	return (
 		<div className="flex min-h-screen flex-col bg-white text-gray-800 dark:bg-[#1a1a1a] dark:text-gray-100">
@@ -36,8 +39,10 @@ const PlainShell = ({
 				onShowTerminal={onShowTerminal}
 				toggleNightMode={onToggleTheme}
 			/>
-			<div className="mx-auto flex w-full max-w-[1200px] flex-1 gap-8 p-8 max-md:flex-col max-md:gap-4 max-md:p-4">
-				<InfoContainer nightMode={nightMode} />
+			<div
+				className={`mx-auto flex w-full max-w-[1200px] flex-1 p-8 max-md:flex-col max-md:gap-4 max-md:p-4 ${skillsPage ? "" : "gap-8"}`}
+			>
+				{!skillsPage && <InfoContainer nightMode={nightMode} />}
 				<main id={mainId} className="min-w-0 flex-1">
 					<Routes>
 						<Route path="/" element={<About nightMode={nightMode} />} />
@@ -51,6 +56,7 @@ const PlainShell = ({
 						/>
 						<Route path="/notes" element={<Notes nightMode={nightMode} />} />
 						<Route path="/resources" element={<Resources />} />
+						<Route path="/skills" element={<AgentSkills />} />
 						<Route path="*" element={<NotFound nightMode={nightMode} />} />
 					</Routes>
 				</main>

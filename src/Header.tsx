@@ -48,6 +48,7 @@ const Header = ({
 		["/projects", "My Projects"],
 		["/notes", "My Notes"],
 		["/resources", "Resources"],
+		["/skills", "Agent Skills"],
 	];
 
 	const navLinkClass = (to: string) =>

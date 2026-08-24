@@ -71,6 +71,40 @@ describe("portfolio modes", () => {
 		expect(screen.getByText(/commands: home/)).toBeInTheDocument();
 	});
 
+	it("renders downloadable personal skills and attributed recommendations", async () => {
+		const user = userEvent.setup();
+		render(<App />);
+
+		await user.click(
+			screen.getByRole("button", {
+				name: /agent-skills workflows I built & recommend/i,
+			}),
+		);
+		expect(
+			screen.getByRole("heading", { name: "Agent skills" }),
+		).toBeInTheDocument();
+
+		await user.click(
+			screen.getByRole("button", { name: /\/review-fix-loop/i }),
+		);
+		expect(
+			screen.getByRole("link", { name: "Download SKILL.md" }),
+		).toHaveAttribute("href", "/skills/review-fix-loop/SKILL.md");
+
+		await user.click(screen.getByRole("button", { name: "Recommended · 1" }));
+		expect(screen.getByText("ponytail-review")).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "View upstream" })).toHaveAttribute(
+			"href",
+			"https://github.com/DietrichGebert/ponytail",
+		);
+
+		await user.click(screen.getByRole("button", { name: "Plain view" }));
+		expect(window.location.hash).toBe("#/skills");
+		expect(
+			screen.getByRole("heading", { name: "Agent skills" }),
+		).toBeInTheDocument();
+	});
+
 	it("resizes and remembers the terminal sidebar", async () => {
 		const user = userEvent.setup();
 		render(<App />);

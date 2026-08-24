@@ -26,6 +26,7 @@ import {
 	useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import AgentSkillsRegistry from "../../components/AgentSkillsRegistry";
 import {
 	education,
 	type PortfolioItem,
@@ -895,6 +896,8 @@ const TerminalShell = ({
 					<div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
 						{activeId === "home" ? (
 							<HomeDashboard onOpen={openById} />
+						) : activeId === "skills" ? (
+							<AgentSkillsRegistry variant="terminal" />
 						) : (
 							<DocumentView activeId={activeId} />
 						)}

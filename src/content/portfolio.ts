@@ -175,9 +175,10 @@ export const resources: PortfolioItem[] = [
 	},
 	{
 		id: "skills",
-		label: "recent-skills",
-		detail: "what I am learning",
-		status: "idle",
+		label: "agent-skills",
+		detail: "workflows I built & recommend",
+		status: "external",
+		path: "/skills",
 	},
 ];
 
@@ -463,24 +464,6 @@ export const terminalDocuments: Record<string, TerminalDocument> = {
 			items: [...items],
 		})),
 	},
-	skills: {
-		title: "Recently explored",
-		directory: "~/resources/recent-skills",
-		command: "cat README.md",
-		intro:
-			"A deliberately changing list of techniques, tools, and ideas that have recently improved how I work.",
-		sections: [
-			{
-				heading: "now",
-				items: [
-					"Agent-assisted engineering workflows",
-					"Evaluation for language and speech systems",
-					"Portable development environments",
-					"Accessible interface architecture",
-				],
-			},
-		],
-	},
 };
 
 export const pathToDocument: Record<string, string> = {
@@ -488,4 +471,5 @@ export const pathToDocument: Record<string, string> = {
 	"/projects": "home",
 	"/projects/iqbank": "iqbank",
 	"/notes": "notes",
+	"/skills": "skills",
 };
