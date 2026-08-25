@@ -1,0 +1,4 @@
+# Personal oh-my-tmux overrides.
+
+set -g mouse on
+set -g history-limit 50000

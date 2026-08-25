@@ -17,11 +17,17 @@ const filterLabels: Array<{ id: SkillFilter; label: string }> = [
 
 const AgentSkillsRegistry = ({
 	variant,
+	selectedSkillId,
+	onSkillChange,
 }: {
 	variant: "terminal" | "plain";
+	selectedSkillId?: string;
+	onSkillChange?: (id: string) => void;
 }) => {
 	const [filter, setFilter] = useState<SkillFilter>("all");
-	const [selectedId, setSelectedId] = useState(agentSkills[0].id);
+	const [localSelectedId, setLocalSelectedId] = useState(agentSkills[0].id);
+	const selectedId = selectedSkillId ?? localSelectedId;
+	const setSelectedId = onSkillChange ?? setLocalSelectedId;
 	const [copiedId, setCopiedId] = useState<string | null>(null);
 	const visibleSkills = useMemo(
 		() =>
@@ -275,6 +281,38 @@ const AgentSkillsRegistry = ({
 										{item}
 									</code>
 								))}
+							</div>
+						</div>
+					)}
+
+					{selectedSkill.sourceUrl && (
+						<div className="space-y-2 border-t border-current/15 py-3">
+							<div>
+								<h3
+									className={`text-xs font-bold uppercase tracking-wider ${accentClass}`}
+								>
+									Codex setup
+								</h3>
+								<code
+									className={`mt-1 block break-all font-mono text-xs leading-5 ${headingClass}`}
+								>
+									{selectedSkill.copyText}
+								</code>
+							</div>
+							<div>
+								<h3
+									className={`text-xs font-bold uppercase tracking-wider ${accentClass}`}
+								>
+									Upstream repository
+								</h3>
+								<a
+									href={selectedSkill.sourceUrl}
+									target="_blank"
+									rel="noreferrer"
+									className={`mt-1 inline-block break-all font-mono text-xs leading-5 underline decoration-current/40 underline-offset-2 ${accentClass}`}
+								>
+									{selectedSkill.sourceUrl}
+								</a>
 							</div>
 						</div>
 					)}

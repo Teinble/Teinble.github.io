@@ -24,7 +24,7 @@ const PlainShell = ({
 }: PlainShellProps) => {
 	const mainId = useId();
 	const { pathname } = useLocation();
-	const skillsPage = pathname === "/skills";
+	const fullWidthPage = pathname === "/skills" || pathname === "/resources";
 
 	return (
 		<div className="flex min-h-screen flex-col bg-white text-gray-800 dark:bg-[#1a1a1a] dark:text-gray-100">
@@ -40,9 +40,9 @@ const PlainShell = ({
 				toggleNightMode={onToggleTheme}
 			/>
 			<div
-				className={`mx-auto flex w-full max-w-[1200px] flex-1 p-8 max-md:flex-col max-md:gap-4 max-md:p-4 ${skillsPage ? "" : "gap-8"}`}
+				className={`mx-auto flex w-full max-w-[1200px] flex-1 p-8 max-md:flex-col max-md:gap-4 max-md:p-4 ${fullWidthPage ? "" : "gap-8"}`}
 			>
-				{!skillsPage && <InfoContainer nightMode={nightMode} />}
+				{!fullWidthPage && <InfoContainer nightMode={nightMode} />}
 				<main id={mainId} className="min-w-0 flex-1">
 					<Routes>
 						<Route path="/" element={<About nightMode={nightMode} />} />

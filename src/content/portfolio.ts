@@ -150,28 +150,11 @@ export const spaces: PortfolioItem[] = [
 
 export const resources: PortfolioItem[] = [
 	{
-		id: "dotfiles",
-		label: "dotfiles",
-		detail: "portable shell setup",
+		id: "setup",
+		label: "setup",
+		detail: "apps, dotfiles & configs",
 		status: "external",
-	},
-	{
-		id: "mac-setup",
-		label: "new-mac",
-		detail: "bootstrap checklist",
-		status: "saved",
-	},
-	{
-		id: "linux-setup",
-		label: "linux-server",
-		detail: "remote environment",
-		status: "saved",
-	},
-	{
-		id: "tools",
-		label: "uses",
-		detail: "tools I keep nearby",
-		status: "external",
+		path: "/resources",
 	},
 	{
 		id: "skills",
@@ -388,82 +371,6 @@ export const terminalDocuments: Record<string, TerminalDocument> = {
 			links: [{ label: note.linkLabel, href: note.href }],
 		})),
 	},
-	dotfiles: {
-		title: "Dotfiles",
-		directory: "~/resources/dotfiles",
-		command: "cat README.md",
-		intro:
-			"My portable starting point for a familiar shell on a new Mac or Linux server. This section will grow with the repository.",
-		sections: [
-			{
-				heading: "shell",
-				items: [
-					"zsh",
-					"agnoster prompt",
-					"small aliases that travel well",
-					"machine-specific secrets kept out of Git",
-				],
-			},
-			{
-				heading: "repository",
-				links: [
-					{ label: "Browse my GitHub", href: "https://github.com/Teinble" },
-				],
-			},
-		],
-	},
-	"mac-setup": {
-		title: "New Mac checklist",
-		directory: "~/resources/bootstrap/mac",
-		command: "cat README.md",
-		intro:
-			"A future one-command setup, kept readable so I understand everything it installs.",
-		sections: [
-			{
-				heading: "plan",
-				items: [
-					"Install command-line tools and Homebrew",
-					"Link dotfiles safely",
-					"Restore terminal, editor, Git, and SSH settings",
-					"Install daily applications from a reviewed list",
-				],
-			},
-			{
-				heading: "status",
-				body: "Documentation first; executable bootstrap scripts will be linked when they are ready.",
-			},
-		],
-	},
-	"linux-setup": {
-		title: "Linux server checklist",
-		directory: "~/resources/bootstrap/linux",
-		command: "cat README.md",
-		intro:
-			"A lightweight environment for getting productive quickly on a fresh remote machine.",
-		sections: [
-			{
-				heading: "baseline",
-				items: [
-					"SSH keys and Git identity",
-					"zsh and portable dotfiles",
-					"tmux and terminal tooling",
-					"Python and Node runtimes",
-					"GPU monitoring tools when needed",
-				],
-			},
-		],
-	},
-	tools: {
-		title: "Tools I use",
-		directory: "~/resources/uses",
-		command: "cat README.md",
-		intro:
-			"Tools earn a place here by reducing friction, improving understanding, or making work easier to reproduce.",
-		sections: Object.entries(skillGroups).map(([heading, items]) => ({
-			heading,
-			items: [...items],
-		})),
-	},
 };
 
 export const pathToDocument: Record<string, string> = {
@@ -471,5 +378,6 @@ export const pathToDocument: Record<string, string> = {
 	"/projects": "home",
 	"/projects/iqbank": "iqbank",
 	"/notes": "notes",
+	"/resources": "setup",
 	"/skills": "skills",
 };

@@ -4,15 +4,13 @@ import {
 	BuildingOffice2Icon,
 	CodeBracketSquareIcon,
 	CommandLineIcon,
-	ComputerDesktopIcon,
 	DocumentTextIcon,
 	FolderIcon,
 	HomeIcon,
 	MoonIcon,
-	ServerStackIcon,
 	SparklesIcon,
 	SunIcon,
-	WrenchScrewdriverIcon,
+	XMarkIcon,
 } from "@heroicons/react/24/outline";
 import {
 	type ComponentType,
@@ -27,6 +25,8 @@ import {
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AgentSkillsRegistry from "../../components/AgentSkillsRegistry";
+import SetupRegistry, { type SetupPane } from "../../components/SetupRegistry";
+import { agentSkills } from "../../content/agentSkills";
 import {
 	education,
 	type PortfolioItem,
@@ -35,6 +35,7 @@ import {
 	spaces,
 	terminalDocuments,
 } from "../../content/portfolio";
+import { setupApplications, setupConfigurations } from "../../content/setup";
 import GithubActivity from "./GithubActivity";
 import MobileSwitcher from "./MobileSwitcher";
 
@@ -46,16 +47,21 @@ interface TerminalShellProps {
 
 type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
+type CommandOutput = {
+	title: string;
+	sections: {
+		label: string;
+		rows: { command: string; description: string }[];
+	}[];
+};
+
 const itemIcons: Record<string, IconComponent> = {
 	home: HomeIcon,
 	bosonai: BuildingOffice2Icon,
 	iqbank: BanknotesIcon,
 	xiaomi: BuildingOffice2Icon,
 	notes: DocumentTextIcon,
-	dotfiles: CodeBracketSquareIcon,
-	"mac-setup": ComputerDesktopIcon,
-	"linux-setup": ServerStackIcon,
-	tools: WrenchScrewdriverIcon,
+	setup: CodeBracketSquareIcon,
 	skills: SparklesIcon,
 };
 
@@ -79,28 +85,33 @@ const getInitialSidebarWidth = () => {
 	return Math.min(Math.max(savedWidth, SIDEBAR_MIN_WIDTH), SIDEBAR_MAX_WIDTH);
 };
 
-const shellCommands = [
-	"help",
-	"home",
-	"bosonai",
-	"iqbank",
-	"xiaomi",
-	"notes",
-	"dotfiles",
-	"mac",
-	"linux",
-	"uses",
-	"skills",
-	"plain",
-	"theme",
-	"open bosonai",
-	"open iqbank",
-	"open notes",
-	"open dotfiles",
-	"open mac",
-	"open linux",
-	"open uses",
-] as const;
+const shellCommands = Array.from(
+	new Set([
+		"help",
+		"help setup",
+		"help skills",
+		"home",
+		"bosonai",
+		"iqbank",
+		"xiaomi",
+		"notes",
+		"setup",
+		"setup applications",
+		"setup configurations",
+		"setup mac",
+		"setup linux",
+		"config",
+		"dotfiles",
+		"linux-server",
+		"skills",
+		"cat skills",
+		"plain",
+		"theme",
+		...setupApplications.map((application) => application.id),
+		...setupConfigurations.map((configuration) => `config ${configuration.id}`),
+		...agentSkills.map((skill) => skill.id),
+	]),
+);
 
 const SidebarGroup = ({
 	activeId,
@@ -391,7 +402,7 @@ const HomeDashboard = ({ onOpen }: { onOpen: (id: string) => void }) => (
 					{[
 						["bosonai", "Current ML engineering role", BuildingOffice2Icon],
 						["iqbank", "Previous founder project", BanknotesIcon],
-						["dotfiles", "Portable environment", CodeBracketSquareIcon],
+						["setup", "Apps and configurations", CodeBracketSquareIcon],
 						["skills", "Agent skills I use daily", SparklesIcon],
 					].map(([id, description, Icon]) => {
 						const CommandIcon = Icon as IconComponent;
@@ -526,12 +537,19 @@ const CommandBar = ({
 	feedback,
 	inputId,
 	onRun,
+	output,
+	onDismissOutput,
 }: {
 	feedback: string;
 	inputId: string;
 	onRun: (command: string) => void;
+	output: CommandOutput | null;
+	onDismissOutput: () => void;
 }) => {
 	const [command, setCommand] = useState("");
+	const [history, setHistory] = useState<string[]>([]);
+	const [historyIndex, setHistoryIndex] = useState(-1);
+	const [draftCommand, setDraftCommand] = useState("");
 	const inputRef = useRef<HTMLInputElement>(null);
 	const suggestions = useMemo(() => {
 		const query = command.trim().toLowerCase();
@@ -545,6 +563,18 @@ const CommandBar = ({
 		? selectedSuggestion.slice(command.length)
 		: "";
 
+	useEffect(() => {
+		if (!output) return;
+		const dismissOnEscape = (event: KeyboardEvent) => {
+			if (event.key !== "Escape") return;
+			event.preventDefault();
+			onDismissOutput();
+			inputRef.current?.focus();
+		};
+		window.addEventListener("keydown", dismissOnEscape);
+		return () => window.removeEventListener("keydown", dismissOnEscape);
+	}, [onDismissOutput, output]);
+
 	const completeCommand = (suggestion: string) => {
 		setCommand(suggestion);
 		inputRef.current?.focus();
@@ -552,12 +582,72 @@ const CommandBar = ({
 
 	const submit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		const submittedCommand = command.trim();
+		if (!submittedCommand) return;
+		setHistory((previous) =>
+			previous[0] === submittedCommand
+				? previous
+				: [submittedCommand, ...previous].slice(0, 50),
+		);
+		setHistoryIndex(-1);
+		setDraftCommand("");
 		onRun(command);
 		setCommand("");
 	};
 
 	return (
 		<div className="relative z-20 shrink-0 border-t border-[var(--term-border)] bg-[var(--term-chrome)] px-3 py-2 sm:px-5">
+			{output && (
+				<section
+					aria-label="Terminal command output"
+					className="mb-1 max-h-40 overflow-y-auto overscroll-contain border-b border-[var(--term-border)] pb-1"
+				>
+					<div className="sticky top-0 flex items-center justify-between bg-[var(--term-chrome)] py-0.5">
+						<h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--term-cyan)]">
+							{output.title}
+						</h2>
+						<div className="flex items-center gap-2">
+							<span className="hidden text-[9px] text-[var(--term-muted)] sm:inline">
+								TAB complete · ↑↓ history · ESC close
+							</span>
+							<button
+								type="button"
+								onClick={onDismissOutput}
+								aria-label="Close terminal command output"
+								className="grid size-5 cursor-pointer place-items-center text-[var(--term-muted)] hover:text-[var(--term-heading)]"
+							>
+								<XMarkIcon className="size-3" />
+							</button>
+						</div>
+					</div>
+					<div
+						className={`grid gap-x-4 gap-y-1 pt-0.5 ${output.sections.length > 1 ? "sm:grid-cols-3" : ""}`}
+					>
+						{output.sections.map((section) => (
+							<div key={section.label}>
+								<h3 className="mb-0.5 text-[9px] font-bold uppercase tracking-[0.12em] text-[var(--term-purple)]">
+									{section.label}
+								</h3>
+								<dl className="grid gap-0.5">
+									{section.rows.map((row) => (
+										<div
+											key={row.command}
+											className="grid gap-x-2 text-[10px] leading-4 sm:grid-cols-[minmax(6.5rem,0.95fr)_minmax(0,1.05fr)]"
+										>
+											<dt className="font-bold text-[var(--term-blue)]">
+												{row.command}
+											</dt>
+											<dd className="text-[var(--term-muted)]">
+												{row.description}
+											</dd>
+										</div>
+									))}
+								</dl>
+							</div>
+						))}
+					</div>
+				</section>
+			)}
 			{feedback && (
 				<p
 					className="mb-1 truncate text-[11px] text-[var(--term-muted)]"
@@ -588,14 +678,37 @@ const CommandBar = ({
 						value={command}
 						onChange={(event) => {
 							setCommand(event.target.value);
+							setHistoryIndex(-1);
 						}}
 						onKeyDown={(event) => {
-							if (event.key === "Tab" && selectedSuggestion) {
+							if (
+								selectedSuggestion &&
+								(event.key === "Tab" ||
+									(event.key === "ArrowRight" &&
+										event.currentTarget.selectionStart === command.length))
+							) {
 								event.preventDefault();
 								completeCommand(selectedSuggestion);
+								return;
+							}
+							if (event.key === "ArrowUp" && history.length > 0) {
+								event.preventDefault();
+								if (historyIndex === -1) setDraftCommand(command);
+								const nextIndex = Math.min(
+									historyIndex + 1,
+									history.length - 1,
+								);
+								setHistoryIndex(nextIndex);
+								setCommand(history[nextIndex]);
+							}
+							if (event.key === "ArrowDown" && historyIndex >= 0) {
+								event.preventDefault();
+								const nextIndex = historyIndex - 1;
+								setHistoryIndex(nextIndex);
+								setCommand(nextIndex < 0 ? draftCommand : history[nextIndex]);
 							}
 						}}
-						placeholder="try: help, bosonai, dotfiles, uses"
+						placeholder="try: help, setup mac, cat skills"
 						autoComplete="off"
 						spellCheck={false}
 						className="relative w-full bg-transparent leading-5 text-[var(--term-heading)] outline-none placeholder:text-[var(--term-muted)]/70"
@@ -624,7 +737,17 @@ const TerminalShell = ({
 	const [feedback, setFeedback] = useState(
 		"type 'help' to see available commands",
 	);
+	const [commandOutput, setCommandOutput] = useState<CommandOutput | null>(
+		null,
+	);
 	const [switcherOpen, setSwitcherOpen] = useState(false);
+	const [setupPane, setSetupPane] = useState<SetupPane>("applications");
+	const [selectedSetupConfigurationId, setSelectedSetupConfigurationId] =
+		useState(setupConfigurations[0].id);
+	const [expandedSetupGuideId, setExpandedSetupGuideId] = useState<
+		string | null
+	>(null);
+	const [selectedSkillId, setSelectedSkillId] = useState(agentSkills[0].id);
 	const [sidebarWidth, setSidebarWidth] = useState(getInitialSidebarWidth);
 	const shellBodyRef = useRef<HTMLDivElement>(null);
 	const resizingSidebarRef = useRef(false);
@@ -661,9 +784,83 @@ const TerminalShell = ({
 	const runCommand = (rawCommand: string) => {
 		const normalized = rawCommand.trim().toLowerCase();
 		if (!normalized) return;
-		if (normalized === "help") {
+		setCommandOutput(null);
+		if (normalized === "help" || normalized.startsWith("help ")) {
+			const helpSections: CommandOutput["sections"] = [
+				{
+					label: "Navigation",
+					rows: [
+						{
+							command: "home · bosonai · iqbank",
+							description: "Portfolio and work",
+						},
+						{
+							command: "notes · plain · theme",
+							description: "Notes, view, theme",
+						},
+					],
+				},
+				{
+					label: "Setup",
+					rows: [
+						{
+							command: "setup mac · setup linux",
+							description: "Machine setup guides",
+						},
+						{
+							command: "config <name> · dotfiles",
+							description: "Application settings",
+						},
+					],
+				},
+				{
+					label: "Skills",
+					rows: [
+						{
+							command: "skills · cat skills",
+							description: "Browse or list skills",
+						},
+						{
+							command: "ask · eli5 · review-fix-loop",
+							description: "Open a specific skill",
+						},
+					],
+				},
+			];
+			const topic = normalized.replace(/^help\s*/, "");
+			const matchingSections = topic
+				? helpSections.filter((section) =>
+						section.label.toLowerCase().startsWith(topic),
+					)
+				: helpSections;
+			if (matchingSections.length === 0) {
+				setFeedback(`unknown help topic: ${topic} · try 'help'`);
+				return;
+			}
+			setCommandOutput({
+				title: topic ? `Help: ${topic}` : "Available commands",
+				sections: matchingSections,
+			});
 			setFeedback(
-				"commands: home · bosonai · iqbank · xiaomi · notes · dotfiles · mac · linux · uses · skills · plain · theme",
+				"commands: home · setup · skills · cat skills · help <topic>",
+			);
+			return;
+		}
+		if (normalized === "cat skills") {
+			setCommandOutput({
+				title: "Available skills",
+				sections: [
+					{
+						label: "Personal and recommended",
+						rows: agentSkills.map((skill) => ({
+							command: skill.id,
+							description: skill.summary,
+						})),
+					},
+				],
+			});
+			setFeedback(
+				`${agentSkills.length} skills · type a skill name to open it`,
 			);
 			return;
 		}
@@ -678,13 +875,91 @@ const TerminalShell = ({
 		}
 
 		const target = normalized.replace(/^(open|cd|cat)\s+/, "");
+		const guideAliases: Record<string, "macos" | "linux"> = {
+			"setup mac": "macos",
+			"setup guide mac": "macos",
+			"new-mac": "macos",
+			mac: "macos",
+			"setup linux": "linux",
+			"setup guide linux": "linux",
+			"linux-server": "linux",
+			linux: "linux",
+		};
+		const guideId = guideAliases[target];
+		if (guideId) {
+			setSetupPane("applications");
+			setExpandedSetupGuideId(guideId);
+			openById("setup");
+			setFeedback(
+				`opened ${guideId === "macos" ? "Mac" : "Linux"} setup guide`,
+			);
+			return;
+		}
+		const configurationTarget = target.match(/^(?:setup )?config\s+(.+)$/)?.[1];
+		const configuration = setupConfigurations.find(
+			(candidate) =>
+				candidate.id === configurationTarget ||
+				candidate.name.toLowerCase() === configurationTarget,
+		);
+		if (configuration) {
+			setSelectedSetupConfigurationId(configuration.id);
+			setSetupPane("configurations");
+			openById("setup");
+			setFeedback(`opened ${configuration.name}`);
+			return;
+		}
+		const skillTarget = target.replace(/^skills\s+/, "");
+		const skill = agentSkills.find(
+			(candidate) =>
+				candidate.id === skillTarget || candidate.command === skillTarget,
+		);
+		if (skill) {
+			setSelectedSkillId(skill.id);
+			openById("skills");
+			setFeedback(`opened ${skill.command}`);
+			return;
+		}
+		if (
+			target === "config" ||
+			target === "configurations" ||
+			target === "setup configurations"
+		) {
+			setSetupPane("configurations");
+			openById("setup");
+			setFeedback("opened setup configurations");
+			return;
+		}
+		if (target === "setup applications") {
+			setSetupPane("applications");
+			openById("setup");
+			return;
+		}
+		if (target === "dotfiles") {
+			setSelectedSetupConfigurationId("zshrc");
+			setSetupPane("configurations");
+			openById("setup");
+			setFeedback("opened dotfiles configuration");
+			return;
+		}
+		const application = setupApplications.find(
+			(candidate) => candidate.id === target,
+		);
+		if (application) {
+			if (application.configurationId) {
+				setSelectedSetupConfigurationId(application.configurationId);
+				setSetupPane("configurations");
+			} else {
+				setSetupPane("applications");
+			}
+			openById("setup");
+			setFeedback(`opened ${application.name}`);
+			return;
+		}
 		const aliases: Record<string, string> = {
 			about: "home",
 			whoami: "home",
 			boson: "bosonai",
-			mac: "mac-setup",
-			linux: "linux-setup",
-			uses: "tools",
+			uses: "setup",
 		};
 		const targetId = aliases[target] ?? target;
 		const item = [...spaces, ...resources].find(
@@ -752,8 +1027,8 @@ const TerminalShell = ({
 					gridTemplateColumns: `${sidebarWidth}px 5px minmax(0, 1fr)`,
 				}}
 			>
-				<aside className="hidden h-full min-h-0 overflow-y-auto overscroll-contain bg-[var(--term-panel)] md:block">
-					<div className="border-b border-[var(--term-border)] px-3 py-2">
+				<aside className="hidden h-full min-h-0 flex-col overflow-hidden bg-[var(--term-panel)] md:flex">
+					<div className="shrink-0 border-b border-[var(--term-border)] px-3 py-2">
 						<p className="text-[10px] uppercase tracking-[0.2em] text-[var(--term-muted)]">
 							workspace
 						</p>
@@ -761,19 +1036,24 @@ const TerminalShell = ({
 							xiling.dev
 						</p>
 					</div>
-					<SidebarGroup
-						activeId={activeId}
-						items={spaces}
-						label="Spaces"
-						onSelect={selectItem}
-					/>
-					<SidebarGroup
-						activeId={activeId}
-						items={resources}
-						label="Resources"
-						onSelect={selectItem}
-					/>
-					<div className="px-3 py-2 text-[10px] leading-4 text-[var(--term-muted)]">
+					<nav
+						aria-label="Sidebar navigation"
+						className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
+					>
+						<SidebarGroup
+							activeId={activeId}
+							items={spaces}
+							label="Spaces"
+							onSelect={selectItem}
+						/>
+						<SidebarGroup
+							activeId={activeId}
+							items={resources}
+							label="Resources"
+							onSelect={selectItem}
+						/>
+					</nav>
+					<footer className="shrink-0 border-t border-[var(--term-border)] px-3 py-2 text-[10px] leading-4 text-[var(--term-muted)]">
 						<p className="mb-1 text-[9px] font-bold uppercase tracking-[0.16em]">
 							Status
 						</p>
@@ -804,7 +1084,7 @@ const TerminalShell = ({
 							{" · "}night owl {nightMode ? "dark" : "light"}
 							{" · "}Toronto/EDT
 						</p>
-					</div>
+					</footer>
 				</aside>
 				<hr
 					aria-label="Resize sidebar"
@@ -885,9 +1165,30 @@ const TerminalShell = ({
 						</button>
 					</div>
 					<div className="sticky top-0 z-10 hidden h-10 items-stretch border-b border-[var(--term-border)] bg-[var(--term-panel)] md:flex">
-						<div className="flex items-center border-r border-[var(--term-border)] bg-[var(--term-selection)] px-4 text-xs font-bold text-[var(--term-purple)]">
-							⌁ {activeLabel ?? "home"}
-						</div>
+						{activeId === "setup" ? (
+							<>
+								<button
+									type="button"
+									onClick={() => setSetupPane("applications")}
+									aria-pressed={setupPane === "applications"}
+									className={`flex items-center border-r border-[var(--term-border)] px-4 text-xs font-bold ${setupPane === "applications" ? "bg-[var(--term-selection)] text-[var(--term-purple)]" : "text-[var(--term-muted)] hover:bg-[var(--term-selection)]"}`}
+								>
+									⌁ setup
+								</button>
+								<button
+									type="button"
+									onClick={() => setSetupPane("configurations")}
+									aria-pressed={setupPane === "configurations"}
+									className={`flex items-center border-r border-[var(--term-border)] px-4 text-xs font-bold ${setupPane === "configurations" ? "bg-[var(--term-selection)] text-[var(--term-purple)]" : "text-[var(--term-muted)] hover:bg-[var(--term-selection)]"}`}
+								>
+									⌁ configurations
+								</button>
+							</>
+						) : (
+							<div className="flex items-center border-r border-[var(--term-border)] bg-[var(--term-selection)] px-4 text-xs font-bold text-[var(--term-purple)]">
+								⌁ {activeLabel ?? "home"}
+							</div>
+						)}
 						<div className="flex items-center px-4 text-xs text-[var(--term-muted)]">
 							terminal · zsh
 						</div>
@@ -896,8 +1197,22 @@ const TerminalShell = ({
 					<div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
 						{activeId === "home" ? (
 							<HomeDashboard onOpen={openById} />
+						) : activeId === "setup" ? (
+							<SetupRegistry
+								variant="terminal"
+								pane={setupPane}
+								onPaneChange={setSetupPane}
+								selectedConfigurationId={selectedSetupConfigurationId}
+								onConfigurationChange={setSelectedSetupConfigurationId}
+								expandedGuideId={expandedSetupGuideId}
+								onGuideChange={setExpandedSetupGuideId}
+							/>
 						) : activeId === "skills" ? (
-							<AgentSkillsRegistry variant="terminal" />
+							<AgentSkillsRegistry
+								variant="terminal"
+								selectedSkillId={selectedSkillId}
+								onSkillChange={setSelectedSkillId}
+							/>
 						) : (
 							<DocumentView activeId={activeId} />
 						)}
@@ -906,6 +1221,8 @@ const TerminalShell = ({
 						feedback={feedback}
 						inputId={commandInputId}
 						onRun={runCommand}
+						output={commandOutput}
+						onDismissOutput={() => setCommandOutput(null)}
 					/>
 				</main>
 			</div>
