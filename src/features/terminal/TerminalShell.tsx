@@ -5,6 +5,7 @@ import {
 	CodeBracketSquareIcon,
 	CommandLineIcon,
 	DocumentTextIcon,
+	EnvelopeIcon,
 	FolderIcon,
 	HomeIcon,
 	MoonIcon,
@@ -25,6 +26,11 @@ import {
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AgentSkillsRegistry from "../../components/AgentSkillsRegistry";
+import {
+	GitHubIcon,
+	LinkedInIcon,
+	XIcon,
+} from "../../components/InfoContainer";
 import SetupRegistry, { type SetupPane } from "../../components/SetupRegistry";
 import { agentSkills } from "../../content/agentSkills";
 import {
@@ -36,6 +42,7 @@ import {
 	terminalDocuments,
 } from "../../content/portfolio";
 import { setupApplications, setupConfigurations } from "../../content/setup";
+import { formatLastUpdated, lastUpdatedIso } from "../../content/site";
 import GithubActivity from "./GithubActivity";
 import MobileSwitcher from "./MobileSwitcher";
 
@@ -332,6 +339,41 @@ const HomeDashboard = ({ onOpen }: { onOpen: (id: string) => void }) => (
 						/>
 					))}
 				</div>
+				<nav
+					aria-label="Profile social links"
+					className="mx-auto mt-3 grid max-w-52 grid-cols-4 gap-1"
+				>
+					{[
+						{
+							label: "GitHub",
+							href: "https://github.com/Teinble",
+							icon: GitHubIcon,
+						},
+						{ label: "X @Teinble", href: "https://x.com/Teinble", icon: XIcon },
+						{
+							label: "LinkedIn",
+							href: "https://www.linkedin.com/in/xilingzhao/",
+							icon: LinkedInIcon,
+						},
+						{
+							label: "Email",
+							href: "mailto:xiling.zhao@mail.utoronto.ca",
+							icon: EnvelopeIcon,
+						},
+					].map(({ label, href, icon: Icon }) => (
+						<a
+							key={href}
+							href={href}
+							target={href.startsWith("http") ? "_blank" : undefined}
+							rel={href.startsWith("http") ? "noreferrer" : undefined}
+							aria-label={label}
+							title={label}
+							className="grid aspect-square place-items-center border border-[var(--term-border)] bg-[var(--term-bg)] text-[var(--term-blue)] hover:border-[var(--term-blue)] hover:bg-[var(--term-selection)]"
+						>
+							<Icon className="size-4" />
+						</a>
+					))}
+				</nav>
 			</div>
 
 			<div className="min-w-0">
@@ -363,26 +405,6 @@ const HomeDashboard = ({ onOpen }: { onOpen: (id: string) => void }) => (
 						value={`MScAC ${education.graduate.gpa} · BSc ${education.undergraduate.gpa}`}
 					/>
 				</dl>
-
-				<div className="mt-4 flex flex-wrap gap-2">
-					{[
-						["GitHub", "https://github.com/Teinble"],
-						["X @Teinble", "https://x.com/Teinble"],
-						["LinkedIn", "https://www.linkedin.com/in/xilingzhao/"],
-						["Email", "mailto:xiling.zhao@mail.utoronto.ca"],
-					].map(([label, href]) => (
-						<a
-							key={href}
-							href={href}
-							target={href.startsWith("http") ? "_blank" : undefined}
-							rel={href.startsWith("http") ? "noreferrer" : undefined}
-							className="inline-flex items-center gap-1.5 border border-[var(--term-border)] bg-[var(--term-bg)] px-3 py-2 text-xs font-bold text-[var(--term-blue)] hover:border-[var(--term-blue)] hover:bg-[var(--term-selection)]"
-						>
-							{label}
-							<ArrowTopRightOnSquareIcon className="size-3.5" />
-						</a>
-					))}
-				</div>
 			</div>
 		</section>
 
@@ -564,6 +586,27 @@ const CommandBar = ({
 		: "";
 
 	useEffect(() => {
+		const focusOnSlash = (event: KeyboardEvent) => {
+			if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey)
+				return;
+
+			const target = event.target;
+			if (
+				target instanceof HTMLElement &&
+				(target.isContentEditable ||
+					["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))
+			)
+				return;
+
+			event.preventDefault();
+			inputRef.current?.focus();
+		};
+
+		window.addEventListener("keydown", focusOnSlash);
+		return () => window.removeEventListener("keydown", focusOnSlash);
+	}, []);
+
+	useEffect(() => {
 		if (!output) return;
 		const dismissOnEscape = (event: KeyboardEvent) => {
 			if (event.key !== "Escape") return;
@@ -681,6 +724,17 @@ const CommandBar = ({
 							setHistoryIndex(-1);
 						}}
 						onKeyDown={(event) => {
+							if (event.key === "Escape" && !output) {
+								event.preventDefault();
+								if (command) {
+									setCommand("");
+									setHistoryIndex(-1);
+								} else {
+									event.currentTarget.blur();
+								}
+								return;
+							}
+
 							if (
 								selectedSuggestion &&
 								(event.key === "Tab" ||
@@ -715,7 +769,7 @@ const CommandBar = ({
 					/>
 				</div>
 				<span className="hidden text-[10px] text-[var(--term-muted)] sm:block">
-					ENTER TO RUN
+					/ FOCUS · ENTER RUN
 				</span>
 			</form>
 		</div>
@@ -1084,6 +1138,12 @@ const TerminalShell = ({
 							{" · "}night owl {nightMode ? "dark" : "light"}
 							{" · "}Toronto/EDT
 						</p>
+						<time
+							dateTime={lastUpdatedIso}
+							className="mt-0.5 block text-[9px] leading-3.5"
+						>
+							updated {formatLastUpdated(true)}
+						</time>
 					</footer>
 				</aside>
 				<hr

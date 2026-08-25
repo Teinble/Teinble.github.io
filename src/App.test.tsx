@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
@@ -32,6 +32,17 @@ describe("portfolio modes", () => {
 		expect(screen.getByText("Status").closest("footer")).toHaveClass(
 			"shrink-0",
 		);
+		expect(screen.getByText(/^updated /)).toHaveAttribute("datetime");
+		const socialLinks = screen.getByRole("navigation", {
+			name: "Profile social links",
+		});
+		expect(within(socialLinks).getAllByRole("link")).toHaveLength(4);
+		expect(
+			within(socialLinks).getByRole("link", { name: "GitHub" }),
+		).toHaveAttribute("href", "https://github.com/Teinble");
+		expect(
+			within(socialLinks).getByRole("link", { name: "X @Teinble" }),
+		).toHaveAttribute("href", "https://x.com/Teinble");
 	});
 
 	it("preserves the original website as plain mode", async () => {
@@ -49,6 +60,10 @@ describe("portfolio modes", () => {
 		expect(screen.getByText("4.0/4.0")).toBeInTheDocument();
 		expect(screen.getByText("3.94/4.0")).toBeInTheDocument();
 		expect(screen.queryByText(/Selected courses/i)).not.toBeInTheDocument();
+		expect(screen.getByText(/Last updated:/)).toBeInTheDocument();
+		expect(
+			screen.queryByText("Last updated: August 20, 2026"),
+		).not.toBeInTheDocument();
 	});
 
 	it("navigates through terminal spaces", async () => {
@@ -83,6 +98,33 @@ describe("portfolio modes", () => {
 		expect(
 			screen.getByRole("heading", { name: "Configurations" }),
 		).toBeInTheDocument();
+	});
+
+	it("focuses the command line with slash and exits with Escape", async () => {
+		const user = userEvent.setup();
+		render(<App />);
+		const commandInput = screen.getByRole("textbox", {
+			name: "Portfolio command",
+		});
+
+		expect(commandInput).not.toHaveFocus();
+		expect(screen.getByText("/ FOCUS · ENTER RUN")).toBeInTheDocument();
+
+		await user.keyboard("/");
+		expect(commandInput).toHaveFocus();
+		expect(commandInput).toHaveValue("");
+
+		await user.keyboard("help");
+		await user.keyboard("{Escape}");
+		expect(commandInput).toHaveValue("");
+		expect(commandInput).toHaveFocus();
+
+		await user.keyboard("{Escape}");
+		expect(commandInput).not.toHaveFocus();
+
+		await user.click(commandInput);
+		await user.keyboard("/");
+		expect(commandInput).toHaveValue("/");
 	});
 
 	it("completes setup guides, configurations, skills, and command history", async () => {

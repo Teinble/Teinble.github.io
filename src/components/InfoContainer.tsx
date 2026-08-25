@@ -8,7 +8,7 @@ import { AcademicCapIcon } from "@heroicons/react/24/solid";
 import { type SVGProps, useState } from "react";
 import { education } from "../content/portfolio";
 
-const GitHubIcon = (props: SVGProps<SVGSVGElement>) => (
+export const GitHubIcon = (props: SVGProps<SVGSVGElement>) => (
 	<svg
 		viewBox="0 0 24 24"
 		fill="currentColor"
@@ -32,7 +32,7 @@ const InstagramIcon = (props: SVGProps<SVGSVGElement>) => (
 	</svg>
 );
 
-const LinkedInIcon = (props: SVGProps<SVGSVGElement>) => (
+export const LinkedInIcon = (props: SVGProps<SVGSVGElement>) => (
 	<svg
 		viewBox="0 0 24 24"
 		fill="currentColor"
@@ -44,7 +44,7 @@ const LinkedInIcon = (props: SVGProps<SVGSVGElement>) => (
 	</svg>
 );
 
-const XIcon = (props: SVGProps<SVGSVGElement>) => (
+export const XIcon = (props: SVGProps<SVGSVGElement>) => (
 	<svg
 		viewBox="0 0 24 24"
 		fill="currentColor"

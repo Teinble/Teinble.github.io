@@ -1,6 +1,7 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef } from "react";
 import type { PortfolioItem } from "../../content/portfolio";
+import { formatLastUpdated, lastUpdatedIso } from "../../content/site";
 
 interface MobileSwitcherProps {
 	activeId: string;
@@ -153,6 +154,9 @@ const MobileSwitcher = ({
 					{" · "}night owl {nightMode ? "dark" : "light"}
 					{" · "}Toronto/EDT
 				</p>
+				<time dateTime={lastUpdatedIso} className="block text-[10px] leading-4">
+					updated {formatLastUpdated(true)}
+				</time>
 			</section>
 		</div>
 	);

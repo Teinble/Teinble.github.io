@@ -4,6 +4,9 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
 	plugins: [react(), tailwindcss()],
+	define: {
+		"import.meta.env.VITE_BUILD_TIME": JSON.stringify(new Date().toISOString()),
+	},
 	server: {
 		port: 3000,
 		open: true,
