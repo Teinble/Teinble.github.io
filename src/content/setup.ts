@@ -33,8 +33,8 @@ Goal: recreate Xiling's actual macOS environment. Inspect existing configuration
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
    Follow the installer's shell-environment instructions before continuing.
 
-2. Download and review the software manifest at https://xilingzhao.com/setup/Brewfile.
-   Save it as Brewfile in a new directory, then run brew bundle --file=Brewfile from that directory after reviewing the list.
+2. Review the software manifest at https://github.com/Teinble/dotfiles/blob/main/Brewfile.
+   Clone https://github.com/Teinble/dotfiles.git into an unused directory, then run brew bundle --file=Brewfile from that directory after reviewing the list.
    Preserve existing manually installed apps if Homebrew reports a conflict; do not force-overwrite them.
    Brewfile installs software, not app settings or sign-ins. Install Claude Code separately if needed: brew install --cask claude-code.
 
@@ -62,10 +62,10 @@ Goal: recreate Xiling's actual macOS environment. Inspect existing configuration
 	{
 		id: "linux",
 		title: "Linux server",
-		description: "Private dotfiles, uv, tmux, and verified CLI tools",
+		description: "Public dotfiles, uv, tmux, and verified CLI tools",
 		document: `# Agent handoff: set up Xiling's Linux development server
 
-Goal: reproduce Xiling's modular Bash and tmux environment from the private https://github.com/Teinble/dotfiles repository. Keep machine-local paths and credentials outside Git.
+Goal: reproduce Xiling's modular Bash and tmux environment from the public https://github.com/Teinble/dotfiles repository. Keep machine-local paths and credentials outside Git.
 
 1. Verify this is a Linux x86_64 machine:
    uname -s
@@ -76,7 +76,7 @@ Goal: reproduce Xiling's modular Bash and tmux environment from the private http
    command -v git curl tar sha256sum install
    Report any missing executable. Do not install system packages or use sudo without permission.
 
-3. Confirm authenticated access to the private repository without printing credentials. For checkouts from before the history cleanup, preserve local.bash and other local changes, then use a fresh clone rather than merging old history.
+3. Clone over HTTPS without authentication. For checkouts from before the history cleanup, preserve local.bash and other local changes, then use a fresh clone rather than merging old history.
 
 4. Install uv if missing:
    curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -85,7 +85,7 @@ Goal: reproduce Xiling's modular Bash and tmux environment from the private http
 5. Install oh-my-tmux if it is not already present:
    git clone https://github.com/gpakosz/.tmux.git "$HOME/.local/share/tmux/oh-my-tmux"
 
-6. Clone the private repository into an unused directory and inspect its installer:
+6. Clone the public repository into an unused directory and inspect its installer:
    git clone https://github.com/Teinble/dotfiles.git "$HOME/dotfiles"
    cd "$HOME/dotfiles"
    ./install.sh
@@ -162,7 +162,7 @@ export const setupApplications: SetupApplication[] = [
 		name: "Dotfiles",
 		category: "portable",
 		summary:
-			"My private Linux Bash and tmux repository; Brewfile is shared separately.",
+			"My public Linux Bash and tmux configuration, plus the macOS Brewfile.",
 		href: "https://github.com/Teinble/dotfiles",
 		linkLabel: "View dotfiles repository",
 		iconUrl: "/setup/icons/dotfiles.svg",

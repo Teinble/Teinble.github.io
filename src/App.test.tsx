@@ -289,7 +289,7 @@ describe("portfolio modes", () => {
 		).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: /View Brewfile/ })).toHaveAttribute(
 			"href",
-			"/setup/Brewfile",
+			"https://github.com/Teinble/dotfiles/blob/main/Brewfile",
 		);
 		await user.click(screen.getByText("All tools & installation"));
 		expect(

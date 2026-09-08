@@ -29,6 +29,16 @@ The website does not install global instructions or report machine deployment st
 
 ## Original scaffold documentation
 
+## Deployment branches
+
+Vercel builds source from `main`. `npm run deploy` publishes the already-built
+`dist` directory to `gh-pages` for GitHub Pages. That output branch has no Node
+dependencies and must not be built by Vercel.
+
+Both `vercel.json` and `public/vercel.json` disable Vercel deployments for
+`gh-pages`; the latter is copied into `dist` by Vite. Keep these settings in sync.
+The Setup page links directly to the maintained Brewfile in `Teinble/dotfiles`.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

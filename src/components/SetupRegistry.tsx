@@ -175,7 +175,7 @@ const SetupRegistry = ({
 						</p>
 						<div className="mt-4 flex flex-wrap gap-5 text-sm">
 							<a
-								href="/setup/Brewfile"
+								href="https://github.com/Teinble/dotfiles/blob/main/Brewfile"
 								target="_blank"
 								rel="noreferrer"
 								className={`${accent} hover:underline`}
@@ -188,7 +188,7 @@ const SetupRegistry = ({
 								rel="noreferrer"
 								className={`${accent} hover:underline`}
 							>
-								Dotfiles (private) ↗
+								Dotfiles ↗
 							</a>
 							<button
 								type="button"
