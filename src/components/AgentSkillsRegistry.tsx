@@ -447,14 +447,13 @@ const AgentSkillsRegistry = ({
 							</div>
 							<div className={`mb-4 text-sm leading-6 ${mutedClass}`}>
 								<p>
-									{instruction === "AGENTS.md"
-										? "Git conventions, GitHub authentication checks, temporary files, and optional Herdr collaboration."
-										: "Plain English, clear explanations, and optional Herdr collaboration."}
+									Chinese conversation with English technical terms, English
+									project artifacts, maintainability, and risk-based
+									verification.
 								</p>
 								<p className="mt-1">
-									{instruction === "AGENTS.md"
-										? "Current A100 configuration: adapt the scratch path before using it on another machine."
-										: "Herdr collaboration requires the separately installed herdr-collaboration skill."}
+									Machine profiles are selected locally. GitHub troubleshooting
+									and the installed Herdr skill load only when relevant.
 								</p>
 								<p className="mt-1">
 									Install separately from skills at{" "}
@@ -516,8 +515,9 @@ const AgentSkillsRegistry = ({
 									<h3 className="font-bold">2. Set your global defaults</h3>
 									<p className={mutedClass}>
 										Clone the repo to a stable path. Review the instruction
-										files, adapt machine-specific paths, and back up existing
-										global files before linking or copying them.
+										files and back up existing global files. Create a local
+										entry that references the defaults and only your machine
+										profile.
 									</p>
 									<a
 										className={`underline ${accentClass}`}
@@ -530,11 +530,10 @@ const AgentSkillsRegistry = ({
 									<h3 className="font-bold">3. Update each machine</h3>
 									<code className="mt-2 block text-xs">npx skills update</code>
 									<p className={mutedClass}>
-										For instructions linked to your clone, run{" "}
-										<code>git pull --ff-only</code> inside that clone. Copied
-										instructions need to be copied again after review. Repeat on
-										each machine; a Git push does not update installed files
-										elsewhere.
+										For instructions referenced by your local entry, run{" "}
+										<code>git pull --ff-only</code> inside that clone, then
+										start a fresh agent session. Verify loading on each machine;
+										a Git push does not update installed files elsewhere.
 									</p>
 								</li>
 							</ol>

@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
+import codexInstructions from "../../vendor/agent-config/instructions/AGENTS.md?raw";
+import claudeInstructions from "../../vendor/agent-config/instructions/CLAUDE.md?raw";
 import AgentSkillsRegistry from "./AgentSkillsRegistry";
 
 it("explains installation and shows the canonical global instructions", async () => {
@@ -8,15 +10,13 @@ it("explains installation and shows the canonical global instructions", async ()
 	render(<AgentSkillsRegistry variant="plain" />);
 	expect(screen.getByText(/npx skills add.*--skill ask$/)).toBeInTheDocument();
 	await user.click(screen.getByRole("button", { name: "Global instructions" }));
-	expect(
-		screen.getByText(
-			/Use \/local\/numa1\/scratch\/xiling for disposable artifacts/,
-		),
-	).toBeInTheDocument();
+	expect(document.querySelector("pre code")?.textContent).toBe(
+		codexInstructions,
+	);
 	await user.click(screen.getByRole("button", { name: "Claude · CLAUDE.md" }));
-	expect(
-		screen.getByText(/Write every reply in plain, simple English/),
-	).toBeInTheDocument();
+	expect(document.querySelector("pre code")?.textContent).toBe(
+		claudeInstructions,
+	);
 	await user.click(screen.getByRole("button", { name: "Install & update" }));
 	expect(screen.getByText("npx skills update")).toBeInTheDocument();
 	expect(

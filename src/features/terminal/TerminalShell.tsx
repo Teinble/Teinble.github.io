@@ -875,7 +875,7 @@ const TerminalShell = ({
 							description: "Browse or list skills",
 						},
 						{
-							command: "ask · eli5 · review-fix-loop",
+							command: "ask · eli5 · maintainer-review",
 							description: "Open a specific skill",
 						},
 					],

@@ -157,12 +157,12 @@ describe("portfolio modes", () => {
 			screen.getByRole("heading", { name: "Ghostty profile" }),
 		).toBeInTheDocument();
 
-		await user.type(commandInput, "review");
+		await user.type(commandInput, "maintainer");
 		await user.keyboard("{Tab}");
-		expect(commandInput).toHaveValue("review-fix-loop");
+		expect(commandInput).toHaveValue("maintainer-review");
 		await user.keyboard("{Enter}");
 		expect(
-			screen.getByRole("heading", { name: "/review-fix-loop" }),
+			screen.getByRole("heading", { name: "/maintainer-review" }),
 		).toBeInTheDocument();
 
 		await user.type(commandInput, "setup lin");
@@ -243,11 +243,14 @@ describe("portfolio modes", () => {
 		).toBeInTheDocument();
 
 		await user.click(
-			screen.getByRole("button", { name: /\/review-fix-loop/i }),
+			screen.getByRole("button", { name: /\/maintainer-review/i }),
 		);
 		expect(
-			screen.getByRole("link", { name: "Download SKILL.md" }),
-		).toHaveAttribute("href", "/skills/review-fix-loop/SKILL.md");
+			screen.getByRole("link", { name: "Read skill source" }),
+		).toHaveAttribute(
+			"href",
+			"https://github.com/Teinble/agent-config/tree/main/skills/maintainer-review",
+		);
 
 		await user.selectOptions(
 			screen.getByRole("combobox", { name: "Filter skills" }),
