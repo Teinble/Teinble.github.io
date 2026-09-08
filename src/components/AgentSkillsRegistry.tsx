@@ -138,39 +138,41 @@ const AgentSkillsRegistry = ({
 							{item}
 						</button>
 					))}
-					{section === "Skills" && (
-						<div
-							className={`${controlShapeClass} relative flex min-h-8 w-8 items-center justify-center border focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 ${filter === "all" ? idleClass : selectedClass}`}
-							title={`Filter skills: ${filter}`}
-						>
-							<FunnelIcon className="size-4" aria-hidden="true" />
-							{filter !== "all" && (
-								<span
-									className="absolute right-1 top-1 size-1.5 rounded-full bg-current"
-									aria-hidden="true"
-								/>
-							)}
-							<select
-								aria-label="Filter skills"
-								value={filter}
-								onChange={(event) =>
-									selectFilter(event.target.value as SkillFilter)
-								}
-								className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+					{section === "Skills" &&
+						new Set(agentSkills.map((skill) => skill.kind)).size > 1 && (
+							<div
+								className={`${controlShapeClass} relative flex min-h-8 w-8 items-center justify-center border focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 ${filter === "all" ? idleClass : selectedClass}`}
+								title={`Filter skills: ${filter}`}
 							>
-								{filterLabels.map((item) => (
-									<option key={item.id} value={item.id}>
-										{item.label} ·{" "}
-										{
-											agentSkills.filter(
-												(skill) => item.id === "all" || skill.kind === item.id,
-											).length
-										}
-									</option>
-								))}
-							</select>
-						</div>
-					)}
+								<FunnelIcon className="size-4" aria-hidden="true" />
+								{filter !== "all" && (
+									<span
+										className="absolute right-1 top-1 size-1.5 rounded-full bg-current"
+										aria-hidden="true"
+									/>
+								)}
+								<select
+									aria-label="Filter skills"
+									value={filter}
+									onChange={(event) =>
+										selectFilter(event.target.value as SkillFilter)
+									}
+									className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+								>
+									{filterLabels.map((item) => (
+										<option key={item.id} value={item.id}>
+											{item.label} ·{" "}
+											{
+												agentSkills.filter(
+													(skill) =>
+														item.id === "all" || skill.kind === item.id,
+												).length
+											}
+										</option>
+									))}
+								</select>
+							</div>
+						)}
 				</nav>
 			</header>
 

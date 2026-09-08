@@ -252,24 +252,9 @@ describe("portfolio modes", () => {
 			"https://github.com/Teinble/agent-config/tree/main/skills/maintainer-review",
 		);
 
-		await user.selectOptions(
-			screen.getByRole("combobox", { name: "Filter skills" }),
-			"recommended",
-		);
-		expect(screen.getByText("ponytail-review")).toBeInTheDocument();
 		expect(
-			screen.getByText("codex plugin marketplace add DietrichGebert/ponytail"),
-		).toBeInTheDocument();
-		expect(
-			screen.getByRole("link", {
-				name: "https://github.com/DietrichGebert/ponytail",
-			}),
-		).toHaveAttribute("href", "https://github.com/DietrichGebert/ponytail");
-		expect(screen.getByRole("link", { name: "View upstream" })).toHaveAttribute(
-			"href",
-			"https://github.com/DietrichGebert/ponytail",
-		);
-
+			screen.queryByRole("combobox", { name: "Filter skills" }),
+		).not.toBeInTheDocument();
 		await user.click(screen.getByRole("button", { name: "Plain view" }));
 		expect(window.location.hash).toBe("#/skills");
 		expect(
