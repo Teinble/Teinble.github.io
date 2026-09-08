@@ -1,4 +1,33 @@
-# Getting Started with Create React App
+# Personal website
+
+## Agent configuration
+
+Personal skills and global instructions live in [Teinble/agent-config](https://github.com/Teinble/agent-config).
+`vendor/agent-config` is a Git submodule pinned to the version used by this site.
+
+```sh
+git submodule update --init --recursive
+npm install
+npm run dev
+```
+
+Edit skill content and personal registry metadata in the submodule, commit and
+push there first, then commit the new submodule pointer in this repository.
+To consume an upstream update:
+
+```sh
+git submodule update --remote vendor/agent-config
+npm test
+npm run build
+git add vendor/agent-config
+git commit -m "chore: update agent configuration"
+```
+
+`public/skills/` is generated before development, tests, and builds. Do not edit it.
+Third-party recommendations remain in `src/content/agentSkills.ts`.
+The website does not install global instructions or report machine deployment state.
+
+## Original scaffold documentation
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

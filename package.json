@@ -32,6 +32,9 @@
 		"vitest": "^2.1.9"
 	},
 	"scripts": {
+		"predev": "node scripts/prepare-skills.mjs",
+		"prebuild": "node scripts/prepare-skills.mjs",
+		"pretest": "node scripts/prepare-skills.mjs",
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
@@ -39,7 +42,7 @@
 		"test:watch": "vitest",
 		"lint": "biome check",
 		"lint:fix": "biome check --write",
-		"predeploy": "vite build",
+		"predeploy": "npm run build",
 		"deploy": "gh-pages -d dist"
 	},
 	"browserslist": {

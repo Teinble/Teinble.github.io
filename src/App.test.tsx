@@ -235,11 +235,11 @@ describe("portfolio modes", () => {
 
 		await user.click(
 			screen.getByRole("button", {
-				name: /agent-skills workflows I built & recommend/i,
+				name: /agent-skills skills, global defaults & setup/i,
 			}),
 		);
 		expect(
-			screen.getByRole("heading", { name: "Agent skills" }),
+			screen.getByRole("heading", { name: "Agent skills & instructions" }),
 		).toBeInTheDocument();
 
 		await user.click(
@@ -249,7 +249,10 @@ describe("portfolio modes", () => {
 			screen.getByRole("link", { name: "Download SKILL.md" }),
 		).toHaveAttribute("href", "/skills/review-fix-loop/SKILL.md");
 
-		await user.click(screen.getByRole("button", { name: "Recommended · 1" }));
+		await user.selectOptions(
+			screen.getByRole("combobox", { name: "Filter skills" }),
+			"recommended",
+		);
 		expect(screen.getByText("ponytail-review")).toBeInTheDocument();
 		expect(
 			screen.getByText("codex plugin marketplace add DietrichGebert/ponytail"),
@@ -267,7 +270,7 @@ describe("portfolio modes", () => {
 		await user.click(screen.getByRole("button", { name: "Plain view" }));
 		expect(window.location.hash).toBe("#/skills");
 		expect(
-			screen.getByRole("heading", { name: "Agent skills" }),
+			screen.getByRole("heading", { name: "Agent skills & instructions" }),
 		).toBeInTheDocument();
 	});
 

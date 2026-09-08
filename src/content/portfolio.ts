@@ -159,7 +159,7 @@ export const resources: PortfolioItem[] = [
 	{
 		id: "skills",
 		label: "agent-skills",
-		detail: "workflows I built & recommend",
+		detail: "skills, global defaults & setup",
 		status: "external",
 		path: "/skills",
 	},

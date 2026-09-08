@@ -1,0 +1,3 @@
+[submodule "vendor/agent-config"]
+	path = vendor/agent-config
+	url = https://github.com/Teinble/agent-config.git
