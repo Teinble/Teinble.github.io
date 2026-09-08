@@ -33,9 +33,10 @@ Goal: recreate Xiling's actual macOS environment. Inspect existing configuration
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
    Follow the installer's shell-environment instructions before continuing.
 
-2. Install the daily applications and terminal font:
-   brew install --cask ghostty codex claude-code arc obsidian karabiner-elements font-meslo-lg-nerd-font
-   Install the Mole desktop application from https://mole.fit/; do not substitute an unrelated CLI package.
+2. Download and review the software manifest at https://xilingzhao.com/setup/Brewfile.
+   Save it as Brewfile in a new directory, then run brew bundle --file=Brewfile from that directory after reviewing the list.
+   Preserve existing manually installed apps if Homebrew reports a conflict; do not force-overwrite them.
+   Brewfile installs software, not app settings or sign-ins. Install Claude Code separately if needed: brew install --cask claude-code.
 
 3. Restore the real zsh environment:
    git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
@@ -56,7 +57,7 @@ Goal: recreate Xiling's actual macOS environment. Inspect existing configuration
 
 6. Ask the user to complete app sign-ins and approve Karabiner's required macOS permissions.
 
-7. Verify: brew list --cask; zsh starts without errors; Ghostty uses Night Owl and Meslo; Karabiner remaps work; Obsidian plugins load; Codex and Claude Code open successfully.`,
+7. Verify: brew list --cask; zsh starts without errors; Ghostty uses Night Owl and Meslo; Raycast opens; Karabiner remaps work; Obsidian plugins load; Codex and Claude Code open successfully.`,
 	},
 	{
 		id: "linux",
@@ -64,7 +65,7 @@ Goal: recreate Xiling's actual macOS environment. Inspect existing configuration
 		description: "Private dotfiles, uv, tmux, and verified CLI tools",
 		document: `# Agent handoff: set up Xiling's Linux development server
 
-Goal: reproduce Xiling's real modular Bash and tmux environment from the private https://github.com/Teinble/dotfiles repository. Never publish machine-local paths, credentials, or repository-only settings.
+Goal: reproduce Xiling's modular Bash and tmux environment from the private https://github.com/Teinble/dotfiles repository. Keep machine-local paths and credentials outside Git.
 
 1. Verify this is a Linux x86_64 machine:
    uname -s
@@ -75,7 +76,7 @@ Goal: reproduce Xiling's real modular Bash and tmux environment from the private
    command -v git curl tar sha256sum install
    Report any missing executable. Do not install system packages or use sudo without permission.
 
-3. Confirm authenticated access to the private dotfiles repository. If GitHub SSH access is not already configured, ask the user to authenticate; never request or print a token.
+3. Confirm authenticated access to the private repository without printing credentials. For checkouts from before the history cleanup, preserve local.bash and other local changes, then use a fresh clone rather than merging old history.
 
 4. Install uv if missing:
    curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -84,17 +85,19 @@ Goal: reproduce Xiling's real modular Bash and tmux environment from the private
 5. Install oh-my-tmux if it is not already present:
    git clone https://github.com/gpakosz/.tmux.git "$HOME/.local/share/tmux/oh-my-tmux"
 
-6. Clone the actual private repository and inspect its installer:
-   git clone git@github.com:Teinble/dotfiles.git "$HOME/dotfiles"
+6. Clone the private repository into an unused directory and inspect its installer:
+   git clone https://github.com/Teinble/dotfiles.git "$HOME/dotfiles"
    cd "$HOME/dotfiles"
    ./install.sh
    The installer links the real Bash and tmux configuration and installs pinned, checksum-verified fzf, bat, and fd into ~/.local/bin without sudo.
 
-7. Treat bash/bashrc.d/local.bash as machine-specific and sensitive. Preserve any existing local overrides; ask before changing private paths, Slurm settings, Conda initialization, or credentials.
+7. Install Lazygit and Yazi using the machine's existing package manager. Follow https://github.com/jesseduffield/lazygit and https://yazi-rs.github.io/docs/installation/; ask before using sudo or adding a new package manager.
 
-8. Start a fresh shell and verify:
+8. Treat bash/bashrc.d/local.bash as machine-specific and sensitive. Preserve any existing local overrides; ask before changing private paths, Slurm settings, Conda initialization, or credentials.
+
+9. Start a fresh shell and verify:
    exec bash
-   command -v fzf bat fd uv uvx
+   command -v fzf bat fd uv uvx lazygit yazi
    alias va
    alias sqme
    alias nvitop
@@ -125,6 +128,27 @@ export const setupApplications: SetupApplication[] = [
 		configurationId: "ghostty",
 	},
 	{
+		id: "lazygit",
+		name: "Lazygit",
+		category: "terminal",
+		summary: "The terminal UI I use for everyday Git operations on Linux.",
+		href: "https://github.com/jesseduffield/lazygit",
+		linkLabel: "View Lazygit",
+		iconUrl: "https://github.com/jesseduffield.png?size=64",
+		installCommand: "brew install lazygit",
+	},
+	{
+		id: "yazi",
+		name: "Yazi",
+		category: "terminal",
+		summary: "My fast terminal file manager for navigating Linux servers.",
+		href: "https://yazi-rs.github.io/docs/installation/",
+		linkLabel: "Install Yazi",
+		iconUrl:
+			"https://raw.githubusercontent.com/sxyazi/yazi/main/assets/logo.png",
+		installCommand: "brew install yazi",
+	},
+	{
 		id: "codex",
 		name: "Codex",
 		category: "agents",
@@ -137,7 +161,8 @@ export const setupApplications: SetupApplication[] = [
 		id: "dotfiles",
 		name: "Dotfiles",
 		category: "portable",
-		summary: "My actual shell dotfiles: macOS zsh and modular Linux Bash.",
+		summary:
+			"My private Linux Bash and tmux repository; Brewfile is shared separately.",
 		href: "https://github.com/Teinble/dotfiles",
 		linkLabel: "View dotfiles repository",
 		iconUrl: "/setup/icons/dotfiles.svg",
@@ -153,7 +178,7 @@ export const setupApplications: SetupApplication[] = [
 		linkLabel: "View Linux server dotfiles",
 		iconUrl: "/setup/icons/linux-server.svg",
 		installCommand:
-			"git clone git@github.com:Teinble/dotfiles.git && cd dotfiles && ./install.sh",
+			"git clone https://github.com/Teinble/dotfiles.git && cd dotfiles && ./install.sh",
 		configurationId: "linux-bashrc",
 	},
 	{
@@ -172,6 +197,16 @@ export const setupApplications: SetupApplication[] = [
 		summary: "The browser I use to keep research and daily work organized.",
 		href: "https://arc.net/download",
 		linkLabel: "Download Arc",
+	},
+	{
+		id: "raycast",
+		name: "Raycast",
+		category: "workflow",
+		summary: "My Mac launcher for commands, navigation, and daily shortcuts.",
+		href: "https://www.raycast.com/download",
+		linkLabel: "Download Raycast",
+		iconUrl: "https://www.raycast.com/favicon-production.png",
+		installCommand: "brew install --cask raycast",
 	},
 	{
 		id: "obsidian",

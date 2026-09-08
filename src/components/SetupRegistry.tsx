@@ -105,7 +105,7 @@ const SetupRegistry = ({
 				<p className={`mt-1 max-w-2xl text-sm leading-6 ${muted}`}>
 					{activePane === "configurations"
 						? "Browse my portable environment and Obsidian settings, then download what you need."
-						: "The applications I use every day to make a new machine feel like mine."}
+						: "The tools and small tweaks behind my everyday work."}
 				</p>
 				<div className={`mt-2 flex gap-1 ${terminal ? "md:hidden" : ""}`}>
 					{(["applications", "configurations"] as const).map((option) => (
@@ -125,13 +125,86 @@ const SetupRegistry = ({
 			</header>
 
 			{activePane === "applications" && (
-				<div className="mt-3 grid gap-3">
-					<section className={`${frame} p-3`} aria-label="Agent setup guides">
+				<div className="mt-6 flex flex-col gap-8">
+					<section aria-label="Daily drivers" className="order-0">
+						<h2
+							className={`text-xs font-bold uppercase tracking-wider ${muted}`}
+						>
+							Daily drivers
+						</h2>
+						<div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+							{["ghostty", "raycast", "obsidian", "codex", "arc"].map((id) => {
+								const app = setupApplications.find((item) => item.id === id);
+								if (!app) return null;
+								return (
+									<a
+										key={id}
+										href={app.href}
+										target="_blank"
+										rel="noreferrer"
+										className={`group flex items-start gap-3 ${heading}`}
+									>
+										<img
+											src={app.iconUrl ?? `/setup/icons/${id}.png`}
+											alt=""
+											width={32}
+											height={32}
+											className="size-8 object-contain"
+										/>
+										<span>
+											<strong className="text-sm group-hover:underline">
+												{app.name} ↗
+											</strong>
+											<span className={`mt-1 block text-xs leading-5 ${muted}`}>
+												{app.summary}
+											</span>
+										</span>
+									</a>
+								);
+							})}
+						</div>
+					</section>
+					<section
+						aria-label="Recreate my setup"
+						className={`order-2 border-y border-current/15 py-5 ${heading}`}
+					>
+						<h2 className="text-base font-bold">Recreate my setup</h2>
+						<p className={`mt-1 text-sm ${muted}`}>
+							The full software list lives in Brewfile. Settings live in
+							configuration files.
+						</p>
+						<div className="mt-4 flex flex-wrap gap-5 text-sm">
+							<a
+								href="/setup/Brewfile"
+								target="_blank"
+								rel="noreferrer"
+								className={`${accent} hover:underline`}
+							>
+								View Brewfile ↗
+							</a>
+							<a
+								href="https://github.com/Teinble/dotfiles"
+								target="_blank"
+								rel="noreferrer"
+								className={`${accent} hover:underline`}
+							>
+								Dotfiles (private) ↗
+							</a>
+							<button
+								type="button"
+								onClick={() => setActivePane("configurations")}
+								className={`${accent} cursor-pointer hover:underline`}
+							>
+								Browse configurations →
+							</button>
+						</div>
+					</section>
+					<section className="order-3" aria-label="Agent setup guides">
 						<div className="mb-2 flex items-center justify-between gap-2">
 							<h2
 								className={`text-[10px] font-bold uppercase tracking-[0.16em] ${accent}`}
 							>
-								Agent handoff
+								Setup guides
 							</h2>
 							<span className={`text-[10px] ${muted}`}>
 								copy and give to your agent
@@ -193,120 +266,127 @@ const SetupRegistry = ({
 							})}
 						</div>
 					</section>
-					<section className={`${frame} p-4`}>
-						<h2
-							className={`text-xs font-bold uppercase tracking-[0.16em] ${accent}`}
-						>
-							Applications
-						</h2>
-						<div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
-							{setupCategories.map((category) => (
-								<section key={category.id} className={`border p-3 ${inset}`}>
-									<h3
-										className={`mb-1 text-[10px] font-bold uppercase tracking-wider ${muted}`}
-									>
-										{category.label}
-									</h3>
-									<div className="divide-y divide-current/10">
-										{setupApplications
-											.filter(
-												(application) => application.category === category.id,
-											)
-											.map((application) => {
-												return (
-													<article key={application.id} className="py-2.5">
-														<div className="flex flex-wrap items-center justify-between gap-2">
-															<h4
-																className={`flex min-w-0 items-center gap-1.5 text-sm font-bold ${heading}`}
-															>
-																<img
-																	src={
-																		application.iconUrl ??
-																		`/setup/icons/${application.id}.png`
-																	}
-																	alt=""
-																	width={24}
-																	height={24}
-																	className="size-6 shrink-0 object-contain"
-																/>
-																{application.name}
-															</h4>
-															<div className="flex flex-wrap items-center gap-2">
-																<a
-																	href={application.href}
-																	target={
-																		application.href.startsWith("http")
-																			? "_blank"
-																			: undefined
-																	}
-																	rel={
-																		application.href.startsWith("http")
-																			? "noreferrer"
-																			: undefined
-																	}
-																	download={application.href.startsWith("/")}
-																	aria-label={application.linkLabel}
-																	className={applicationAction}
+					<details className="order-1">
+						<summary className={`cursor-pointer text-sm font-bold ${heading}`}>
+							All tools & installation
+						</summary>
+						<section className="mt-4">
+							<h2
+								className={`text-xs font-bold uppercase tracking-[0.16em] ${accent}`}
+							>
+								Applications
+							</h2>
+							<div className="mt-3 grid gap-6 sm:grid-cols-2">
+								{setupCategories.map((category) => (
+									<section key={category.id} className="min-w-0">
+										<h3
+											className={`mb-1 text-[10px] font-bold uppercase tracking-wider ${muted}`}
+										>
+											{category.label}
+										</h3>
+										<div className="divide-y divide-current/10">
+											{setupApplications
+												.filter(
+													(application) => application.category === category.id,
+												)
+												.map((application) => {
+													return (
+														<article key={application.id} className="py-2.5">
+															<div className="flex flex-wrap items-center justify-between gap-2">
+																<h4
+																	className={`flex min-w-0 items-center gap-1.5 text-sm font-bold ${heading}`}
 																>
-																	{application.id === "homebrew"
-																		? "Install"
-																		: application.category === "portable"
-																			? "GitHub"
-																			: "Download"}
-																	<ArrowTopRightOnSquareIcon className="size-3" />
-																</a>
-																{application.configurationId && (
-																	<button
-																		type="button"
-																		onClick={() => {
-																			setSelectedConfigurationId(
-																				application.configurationId ??
-																					"ghostty",
-																			);
-																			setActivePane("configurations");
-																		}}
-																		aria-label={`View ${application.name} configuration`}
+																	<img
+																		src={
+																			application.iconUrl ??
+																			`/setup/icons/${application.id}.png`
+																		}
+																		alt=""
+																		width={24}
+																		height={24}
+																		className="size-6 shrink-0 object-contain"
+																	/>
+																	{application.name}
+																</h4>
+																<div className="flex flex-wrap items-center gap-2">
+																	<a
+																		href={application.href}
+																		target={
+																			application.href.startsWith("http")
+																				? "_blank"
+																				: undefined
+																		}
+																		rel={
+																			application.href.startsWith("http")
+																				? "noreferrer"
+																				: undefined
+																		}
+																		download={application.href.startsWith("/")}
+																		aria-label={application.linkLabel}
 																		className={applicationAction}
 																	>
-																		<Cog6ToothIcon className="size-3" />
-																		Config
-																	</button>
-																)}
+																		{application.id === "homebrew"
+																			? "Install"
+																			: application.category === "portable"
+																				? "GitHub"
+																				: "Download"}
+																		<ArrowTopRightOnSquareIcon className="size-3" />
+																	</a>
+																	{application.configurationId && (
+																		<button
+																			type="button"
+																			onClick={() => {
+																				setSelectedConfigurationId(
+																					application.configurationId ??
+																						"ghostty",
+																				);
+																				setActivePane("configurations");
+																			}}
+																			aria-label={`View ${application.name} configuration`}
+																			className={applicationAction}
+																		>
+																			<Cog6ToothIcon className="size-3" />
+																			Config
+																		</button>
+																	)}
+																</div>
 															</div>
-														</div>
-														<p className={`mt-0.5 text-xs leading-5 ${muted}`}>
-															{application.summary}
-														</p>
-														{application.installCommand && (
-															<button
-																type="button"
-																onClick={() =>
-																	copyCommand(
-																		application.id,
-																		application.installCommand ?? "",
-																	)
-																}
-																aria-label={`Copy ${application.name} install command`}
-																className={`mt-1.5 inline-flex max-w-full items-center gap-2 border px-2 py-1 font-mono text-[10px] ${action}`}
+															<p
+																className={`mt-0.5 text-xs leading-5 ${muted}`}
 															>
-																{copiedId === application.id ? (
-																	<CheckIcon className="size-3 shrink-0" />
-																) : (
-																	<ClipboardDocumentIcon className="size-3 shrink-0" />
-																)}
-																<span className="truncate">
-																	{application.installCommand}
-																</span>
-															</button>
-														)}
-													</article>
-												);
-											})}
-									</div>
-								</section>
-							))}
-						</div>
-					</section>
+																{application.summary}
+															</p>
+															{application.installCommand && (
+																<button
+																	type="button"
+																	onClick={() =>
+																		copyCommand(
+																			application.id,
+																			application.installCommand ?? "",
+																		)
+																	}
+																	aria-label={`Copy ${application.name} install command`}
+																	className={`mt-1.5 inline-flex max-w-full items-center gap-2 border px-2 py-1 font-mono text-[10px] ${action}`}
+																>
+																	{copiedId === application.id ? (
+																		<CheckIcon className="size-3 shrink-0" />
+																	) : (
+																		<ClipboardDocumentIcon className="size-3 shrink-0" />
+																	)}
+																	<span className="truncate">
+																		{application.installCommand}
+																	</span>
+																</button>
+															)}
+														</article>
+													);
+												})}
+										</div>
+									</section>
+								))}
+							</div>
+						</section>
+					</details>
 				</div>
 			)}
 

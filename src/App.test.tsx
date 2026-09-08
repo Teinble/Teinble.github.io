@@ -285,6 +285,14 @@ describe("portfolio modes", () => {
 			screen.getByRole("heading", { name: "My setup" }),
 		).toBeInTheDocument();
 		expect(
+			screen.getByRole("region", { name: "Daily drivers" }),
+		).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: /View Brewfile/ })).toHaveAttribute(
+			"href",
+			"/setup/Brewfile",
+		);
+		await user.click(screen.getByText("All tools & installation"));
+		expect(
 			screen.getByRole("link", { name: "Download Ghostty" }),
 		).toHaveAttribute("href", "https://ghostty.org/download");
 		expect(
@@ -301,6 +309,15 @@ describe("portfolio modes", () => {
 		expect(
 			screen.getByRole("button", { name: "Copy Codex install command" }),
 		).toHaveTextContent("brew install --cask codex");
+		expect(
+			screen.getByRole("button", { name: "Copy Lazygit install command" }),
+		).toHaveTextContent("brew install lazygit");
+		expect(
+			screen.getByRole("button", { name: "Copy Yazi install command" }),
+		).toHaveTextContent("brew install yazi");
+		expect(
+			screen.getByRole("button", { name: "Copy Raycast install command" }),
+		).toHaveTextContent("brew install --cask raycast");
 		expect(
 			screen.getByRole("link", { name: "View dotfiles repository" }),
 		).toHaveAttribute("href", "https://github.com/Teinble/dotfiles");
@@ -411,14 +428,14 @@ describe("portfolio modes", () => {
 		).not.toBeInTheDocument();
 
 		await user.click(macGuide);
-		expect(screen.getByText(/font-meslo-lg-nerd-font/)).toBeInTheDocument();
+		expect(screen.getByText(/brew bundle --file=Brewfile/)).toBeInTheDocument();
 		expect(screen.getByText(/zsh-syntax-highlighting/)).toBeInTheDocument();
 
 		await user.click(
 			screen.getByRole("button", { name: "Copy New Mac agent setup guide" }),
 		);
 		expect(await navigator.clipboard.readText()).toContain(
-			"brew install --cask ghostty codex claude-code arc obsidian karabiner-elements",
+			"brew bundle --file=Brewfile",
 		);
 
 		await user.click(linuxGuide);
@@ -429,6 +446,7 @@ describe("portfolio modes", () => {
 			screen.getByText(/checksum-verified fzf, bat, and fd/),
 		).toBeInTheDocument();
 		expect(screen.getByText(/github.com\/gpakosz\/\.tmux/)).toBeInTheDocument();
+		expect(screen.getByText(/Install Lazygit and Yazi/)).toBeInTheDocument();
 	});
 
 	it("resizes and remembers the terminal sidebar", async () => {
