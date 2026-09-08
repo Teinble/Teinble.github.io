@@ -1,0 +1,10 @@
+{
+	"autoPullOnBoot": false,
+	"autoPullInterval": 0,
+	"autoPushInterval": 0,
+	"pullBeforePush": true,
+	"showBranchStatusBar": true,
+	"showStatusBar": true,
+	"syncMethod": "merge",
+	"commitDateFormat": "YYYY-MM-DD HH:mm:ss"
+}

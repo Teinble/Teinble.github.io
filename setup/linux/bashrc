@@ -1,0 +1,24 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+
+# If not running interactively, don't do anything.
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+source_if_exists() {
+    [ -r "$1" ] && . "$1"
+}
+
+source_if_exists "$HOME/.bashrc.d/history.bash"
+source_if_exists "$HOME/.bashrc.d/options.bash"
+source_if_exists "$HOME/.bashrc.d/env.bash"
+source_if_exists "$HOME/.bashrc.d/prompt.bash"
+source_if_exists "$HOME/.bashrc.d/aliases.bash"
+source_if_exists "$HOME/.bashrc.d/completion.bash"
+source_if_exists "$HOME/.bashrc.d/paths.bash"
+source_if_exists "$HOME/.bashrc.d/conda.bash"
+source_if_exists "$HOME/.bashrc.d/local.bash"
+
+unset -f source_if_exists
+export PATH="$HOME/.local/bin:$PATH"

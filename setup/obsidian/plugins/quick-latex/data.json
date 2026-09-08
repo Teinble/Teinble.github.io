@@ -1,0 +1,10 @@
+{
+	"autoCloseMath_toggle": true,
+	"autoCloseCurly_toggle": true,
+	"autoCloseRound_toggle": true,
+	"autoFraction_toggle": true,
+	"autoEncloseSub_toggle": true,
+	"autoEncloseSup_toggle": true,
+	"autoGreekCommandMathMode_toggle": true,
+	"useTabtoComplete_toggle": false
+}

@@ -1,0 +1,24 @@
+# ~/.zshrc — interactive Zsh configuration
+# Keep prompt ownership in Oh My Zsh; do not source another prompt framework here.
+
+# Oh My Zsh
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="agnoster"
+
+# Keep this list small: these two plugins must remain last because they alter ZLE.
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+source "$ZSH/oh-my-zsh.sh"
+
+# Local tools
+[[ -r "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
+
+# Homebrew OpenSSH takes precedence when installed.
+if (( $+commands[brew] )); then
+  openssh_bin="$(brew --prefix openssh 2>/dev/null)/bin"
+  [[ -d "$openssh_bin" ]] && path=("$openssh_bin" $path)
+fi
+
+# Personal aliases
+alias va='source ./.venv/bin/activate'
+alias zshconfig='${EDITOR:-vim} ~/.zshrc'
+alias ghosttyconfig='${EDITOR:-vim} "$HOME/Library/Application Support/com.mitchellh.ghostty/config.ghostty"'
