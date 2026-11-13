@@ -36,7 +36,7 @@ Goal: recreate Xiling's actual macOS environment. Inspect existing configuration
 2. Review the software manifest at https://github.com/Teinble/dotfiles/blob/main/Brewfile.
    Clone https://github.com/Teinble/dotfiles.git into an unused directory, then run brew bundle --file=Brewfile from that directory after reviewing the list.
    Preserve existing manually installed apps if Homebrew reports a conflict; do not force-overwrite them.
-   Brewfile installs software, not app settings or sign-ins. Install Claude Code separately if needed: brew install --cask claude-code.
+   Brewfile installs software, not app settings or sign-ins. Use the current daily tools: Herdr for coding, Ardia for browsing, and Tinycast as the launcher. Install Herdr from https://github.com/herdrdev/herdr-app and Ardia from https://ardia.dev/; install Tinycast with brew install --cask tinycast. Review the manifest for older app choices before running it. Install Claude Code separately if needed: brew install --cask claude-code.
 
 3. Restore the real zsh environment:
    git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
@@ -46,6 +46,8 @@ Goal: recreate Xiling's actual macOS environment. Inspect existing configuration
    Keep the agnoster theme and Meslo font; skip cloning directories that already exist.
 
 4. Restore application settings:
+   Herdr configuration: https://xilingzhao.me/setup/herdr/config.toml → ~/.config/herdr/config.toml. Inspect it and back up the existing file before merging settings; keep machine-specific settings and sessions local.
+   Open Herdr as the main coding workspace, add the repositories you work on, and verify your coding agents are available. Preserve existing Herdr settings and complete agent sign-ins locally.
    Ghostty profile: https://xilingzhao.me/setup/ghostty/config.ghostty
    Karabiner keymaps: https://xilingzhao.me/setup/karabiner/karabiner.json
    Import each configuration using the application's supported configuration mechanism; preserve existing settings until backed up.
@@ -57,7 +59,7 @@ Goal: recreate Xiling's actual macOS environment. Inspect existing configuration
 
 6. Ask the user to complete app sign-ins and approve Karabiner's required macOS permissions.
 
-7. Verify: brew list --cask; zsh starts without errors; Ghostty uses Night Owl and Meslo; Raycast opens; Karabiner remaps work; Obsidian plugins load; Codex and Claude Code open successfully.`,
+7. Verify: brew list --cask; zsh starts without errors; Ghostty uses Night Owl and Meslo; Tinycast opens; Karabiner remaps work; Obsidian plugins load; Herdr opens the coding workspace; Codex and Claude Code are available; Ardia opens web links.`,
 	},
 	{
 		id: "linux",
@@ -149,6 +151,16 @@ export const setupApplications: SetupApplication[] = [
 		installCommand: "brew install yazi",
 	},
 	{
+		id: "herdr",
+		name: "Herdr",
+		category: "agents",
+		summary:
+			"My main coding workspace for terminals, coding agents, and review.",
+		href: "https://github.com/herdrdev/herdr-app",
+		linkLabel: "Download Herdr",
+		configurationId: "herdr",
+	},
+	{
 		id: "codex",
 		name: "Codex",
 		category: "agents",
@@ -191,22 +203,21 @@ export const setupApplications: SetupApplication[] = [
 		installCommand: "brew install --cask claude-code",
 	},
 	{
-		id: "arc",
-		name: "Arc",
+		id: "ardia",
+		name: "Ardia",
 		category: "workflow",
 		summary: "The browser I use to keep research and daily work organized.",
-		href: "https://arc.net/download",
-		linkLabel: "Download Arc",
+		href: "https://ardia.dev/",
+		linkLabel: "Download Ardia",
 	},
 	{
-		id: "raycast",
-		name: "Raycast",
+		id: "tinycast",
+		name: "Tinycast",
 		category: "workflow",
 		summary: "My Mac launcher for commands, navigation, and daily shortcuts.",
-		href: "https://www.raycast.com/download",
-		linkLabel: "Download Raycast",
-		iconUrl: "https://www.raycast.com/favicon-production.png",
-		installCommand: "brew install --cask raycast",
+		href: "https://tinycast.dev/",
+		linkLabel: "Download Tinycast",
+		installCommand: "brew install --cask tinycast",
 	},
 	{
 		id: "obsidian",
@@ -238,6 +249,30 @@ export const setupApplications: SetupApplication[] = [
 ];
 
 export const setupConfigurations: SetupConfiguration[] = [
+	{
+		id: "herdr",
+		group: "environment",
+		name: "Herdr configuration",
+		path: "~/.config/herdr/config.toml",
+		summary:
+			"My coding workspace settings: agent priority sorting, pane labels, Cmd+Alt navigation, Kitty graphics, and in-app notifications. Back up your existing config before merging these settings; sessions and plugins are separate.",
+		downloadHref: "/setup/herdr/config.toml",
+		preview: [
+			"[ui]",
+			'agent_panel_sort = "priority"',
+			"show_agent_labels_on_pane_borders = true",
+			'status_indicators = "dots"',
+			"",
+			"[keys]",
+			'switch_workspace = "cmd+alt+1..9"',
+			'previous_tab = "cmd+alt+u"',
+			'next_tab = "cmd+alt+o"',
+			'focus_pane_up = "cmd+alt+i"',
+			'focus_pane_left = "cmd+alt+j"',
+			'focus_pane_down = "cmd+alt+k"',
+			'focus_pane_right = "cmd+alt+l"',
+		].join("\n"),
+	},
 	{
 		id: "zshrc",
 		group: "dotfiles",

@@ -26,6 +26,7 @@ import {
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AgentSkillsRegistry from "../../components/AgentSkillsRegistry";
+import ExperiencePhotos from "../../components/ExperiencePhotos";
 import {
 	GitHubIcon,
 	LinkedInIcon,
@@ -457,100 +458,116 @@ const DocumentView = ({ activeId }: { activeId: string }) => {
 	const document = terminalDocuments[activeId] ?? terminalDocuments.home;
 
 	return (
-		<article className="mx-auto w-full max-w-6xl px-4 py-4 sm:px-7 sm:py-6">
-			<AgnosterPrompt
-				command={document.command}
-				directory={document.directory}
-			/>
+		<article
+			className={`mx-auto w-full px-4 py-4 sm:px-7 sm:py-6 ${document.photos ? "grid max-w-[1600px] items-start gap-6 xl:grid-cols-[minmax(0,1fr)_19rem]" : "max-w-6xl"}`}
+		>
+			<div className="min-w-0">
+				<AgnosterPrompt
+					command={document.command}
+					directory={document.directory}
+				/>
 
-			<header className="mt-5 border-l-2 border-[var(--term-cyan)] bg-[var(--term-panel)] px-4 py-3 sm:px-5 sm:py-4">
-				<p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--term-muted)]">
-					{document.directory}
-				</p>
-				<h1 className="mt-1 text-2xl font-bold tracking-tight text-[var(--term-heading)] sm:text-4xl">
-					{document.title}
-				</h1>
-				<p className="mt-2 max-w-4xl text-sm leading-6 text-[var(--term-text)] sm:text-[15px]">
-					<EmphasizedText text={document.intro} />
-				</p>
-				{document.meta && (
-					<div className="mt-3 flex flex-wrap gap-1.5">
-						{document.meta.map((item) => (
-							<span
-								key={item}
-								className="border border-[var(--term-border)] bg-[var(--term-bg)] px-2 py-1 text-[10px] font-bold text-[var(--term-blue)]"
-							>
-								<EmphasizedText text={item} />
-							</span>
-						))}
-					</div>
-				)}
-			</header>
-
-			<div className="mt-4 grid gap-px border border-[var(--term-border)] bg-[var(--term-border)] lg:grid-cols-2">
-				{document.sections.map((section, index) => (
-					<section
-						key={section.heading}
-						className={`min-w-0 bg-[var(--term-panel)] p-4 ${
-							document.sections.length % 2 === 1 &&
-							index === document.sections.length - 1
-								? "lg:col-span-2"
-								: ""
-						}`}
-					>
-						<div className="mb-2.5 flex items-center gap-2 border-b border-[var(--term-border)] pb-2">
-							<span className="grid size-5 place-items-center bg-[var(--term-selection)] text-[10px] font-bold text-[var(--term-purple)]">
-								{String(index + 1).padStart(2, "0")}
-							</span>
-							<h2 className="text-xs font-bold uppercase tracking-[0.12em] text-[var(--term-heading)]">
-								{section.heading}
-							</h2>
+				<header className="mt-5 border-l-2 border-[var(--term-cyan)] bg-[var(--term-panel)] px-4 py-3 sm:px-5 sm:py-4">
+					<p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--term-muted)]">
+						{document.directory}
+					</p>
+					<h1 className="mt-1 text-2xl font-bold tracking-tight text-[var(--term-heading)] sm:text-4xl">
+						{document.title}
+					</h1>
+					<p className="mt-2 max-w-4xl text-sm leading-6 text-[var(--term-text)] sm:text-[15px]">
+						<EmphasizedText text={document.intro} />
+					</p>
+					{document.meta && (
+						<div className="mt-3 flex flex-wrap gap-1.5">
+							{document.meta.map((item) => (
+								<span
+									key={item}
+									className="border border-[var(--term-border)] bg-[var(--term-bg)] px-2 py-1 text-[10px] font-bold text-[var(--term-blue)]"
+								>
+									<EmphasizedText text={item} />
+								</span>
+							))}
 						</div>
-						{section.body && (
-							<p className="text-sm leading-6 text-[var(--term-text)]">
-								<EmphasizedText text={section.body} />
-							</p>
-						)}
-						{section.items && (
-							<ul
-								className={`${section.body ? "mt-3" : ""} space-y-1.5 text-sm leading-6 text-[var(--term-text)]`}
-							>
-								{section.items.map((item) => (
-									<li
-										key={item}
-										className="grid grid-cols-[0.75rem_minmax(0,1fr)] gap-2"
-									>
-										<span className="font-bold text-[var(--term-green)]">
-											›
-										</span>
-										<span>
-											<EmphasizedText text={item} emphasizeLead />
-										</span>
-									</li>
-								))}
-							</ul>
-						)}
-						{section.links && (
-							<div className={`grid gap-1.5 ${section.body ? "mt-3" : ""}`}>
-								{section.links.map((link) => (
-									<a
-										key={link.href}
-										href={link.href}
-										target={link.href.startsWith("http") ? "_blank" : undefined}
-										rel={
-											link.href.startsWith("http") ? "noreferrer" : undefined
-										}
-										className="flex items-center justify-between gap-3 border border-[var(--term-border)] bg-[var(--term-bg)] px-3 py-2 text-xs font-bold text-[var(--term-blue)] hover:border-[var(--term-blue)] hover:bg-[var(--term-selection)]"
-									>
-										{link.label}
-										<ArrowTopRightOnSquareIcon className="size-4 shrink-0" />
-									</a>
-								))}
+					)}
+				</header>
+
+				<div className="mt-4 grid gap-px border border-[var(--term-border)] bg-[var(--term-border)] lg:grid-cols-2">
+					{document.sections.map((section, index) => (
+						<section
+							key={section.heading}
+							className={`min-w-0 bg-[var(--term-panel)] p-4 ${
+								document.sections.length % 2 === 1 &&
+								index === document.sections.length - 1
+									? "lg:col-span-2"
+									: ""
+							}`}
+						>
+							<div className="mb-2.5 flex items-center gap-2 border-b border-[var(--term-border)] pb-2">
+								<span className="grid size-5 place-items-center bg-[var(--term-selection)] text-[10px] font-bold text-[var(--term-purple)]">
+									{String(index + 1).padStart(2, "0")}
+								</span>
+								<h2 className="text-xs font-bold uppercase tracking-[0.12em] text-[var(--term-heading)]">
+									{section.heading}
+								</h2>
 							</div>
-						)}
-					</section>
-				))}
+							{section.body && (
+								<p className="text-sm leading-6 text-[var(--term-text)]">
+									<EmphasizedText text={section.body} />
+								</p>
+							)}
+							{section.items && (
+								<ul
+									className={`${section.body ? "mt-3" : ""} space-y-1.5 text-sm leading-6 text-[var(--term-text)]`}
+								>
+									{section.items.map((item) => (
+										<li
+											key={item}
+											className="grid grid-cols-[0.75rem_minmax(0,1fr)] gap-2"
+										>
+											<span className="font-bold text-[var(--term-green)]">
+												›
+											</span>
+											<span>
+												<EmphasizedText text={item} emphasizeLead />
+											</span>
+										</li>
+									))}
+								</ul>
+							)}
+							{section.links && (
+								<div className={`grid gap-1.5 ${section.body ? "mt-3" : ""}`}>
+									{section.links.map((link) => (
+										<a
+											key={link.href}
+											href={link.href}
+											target={
+												link.href.startsWith("http") ? "_blank" : undefined
+											}
+											rel={
+												link.href.startsWith("http") ? "noreferrer" : undefined
+											}
+											className="flex items-center justify-between gap-3 border border-[var(--term-border)] bg-[var(--term-bg)] px-3 py-2 text-xs font-bold text-[var(--term-blue)] hover:border-[var(--term-blue)] hover:bg-[var(--term-selection)]"
+										>
+											{link.label}
+											<ArrowTopRightOnSquareIcon className="size-4 shrink-0" />
+										</a>
+									))}
+								</div>
+							)}
+						</section>
+					))}
+				</div>
 			</div>
+			{document.photos && (
+				<aside
+					aria-label={`${document.title} event photo sidebar`}
+					// biome-ignore lint/a11y/noNoninteractiveTabindex: The independently scrolling sidebar must support keyboard scrolling.
+					tabIndex={0}
+					className="min-w-0 border border-[var(--term-border)] bg-[var(--term-panel)] p-4 xl:sticky xl:top-6 xl:max-h-[calc(100dvh-14rem)] xl:overflow-y-auto xl:overscroll-contain focus-visible:outline-2 focus-visible:outline-[var(--term-cyan)]"
+				>
+					<ExperiencePhotos photos={document.photos} sidebar />
+				</aside>
+			)}
 		</article>
 	);
 };

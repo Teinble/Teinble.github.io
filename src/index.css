@@ -1,5 +1,28 @@
 @import "tailwindcss";
 
+@font-face {
+	font-family: "Meslo LG L for Powerline";
+	src: url("/fonts/meslo/meslo-lg-l-regular.ttf") format("truetype");
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Meslo LG L for Powerline";
+	src: url("/fonts/meslo/meslo-lg-l-bold.ttf") format("truetype");
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+}
+
+/* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind CSS theme directive */
+@theme {
+	--font-mono:
+		"Meslo LG L for Powerline", ui-monospace, SFMono-Regular, Menlo, Monaco,
+		Consolas, monospace;
+}
+
 /* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind CSS directive */
 @custom-variant dark (&:where(.dark, .dark *));
 

@@ -13,6 +13,14 @@ export type TerminalSection = {
 	links?: Array<{ label: string; href: string }>;
 };
 
+export type PortfolioPhoto = {
+	src: string;
+	alt: string;
+	caption: string;
+	width: number;
+	height: number;
+};
+
 export type TerminalDocument = {
 	title: string;
 	directory: string;
@@ -20,6 +28,7 @@ export type TerminalDocument = {
 	intro: string;
 	meta?: string[];
 	sections: TerminalSection[];
+	photos?: PortfolioPhoto[];
 };
 
 export const education = {
@@ -208,9 +217,35 @@ export const terminalDocuments: Record<string, TerminalDocument> = {
 		directory: "~/portfolio/experience/bosonai",
 		command: "cat README.md",
 		intro:
-			"Working as a Machine Learning Engineer at BosonAI on Higgs Realtime, tool calling, and the evaluation infrastructure that keeps model progress measurable.",
+			"Working as a Machine Learning Engineer at BosonAI on evaluation infrastructure, Higgs Realtime, and audio-native tool calling.",
 		meta: ["Machine Learning Engineer", "Current"],
+		photos: [
+			{
+				src: "/boson/aria-2026.jpg",
+				alt: "Four attendees beside research posters at ARIA 2026, including the Eval Runner poster",
+				caption: "ARIA 2026 · Eval Runner poster session",
+				width: 800,
+				height: 600,
+			},
+			{
+				src: "/boson/higgs-audio-hackathon-2026.jpg",
+				alt: "Group photo at the BosonAI and University of Toronto Higgs Audio Hackathon",
+				caption: "Higgs Audio Hackathon · Toronto, October 23–24, 2026",
+				width: 2752,
+				height: 2064,
+			},
+		],
 		sections: [
+			{
+				heading: "Evaluation platform",
+				items: [
+					"Refactored BosonAI's internal model-evaluation platform",
+					"Reduced company-wide evaluation costs by more than 20×",
+					"Built compressed-evaluation workflows that made evaluation about 10× faster",
+					"Improved experiment and result management through a clearer UI",
+					"Made evaluation workflows easier for both engineers and coding agents to use",
+				],
+			},
 			{
 				heading: "Higgs Realtime",
 				items: [
@@ -220,21 +255,16 @@ export const terminalDocuments: Record<string, TerminalDocument> = {
 				],
 			},
 			{
-				heading: "Evaluation platform",
-				items: [
-					"Refactored BosonAI's internal model-evaluation platform",
-					"Built compressed-evaluation workflows that made evaluation about 10× faster",
-					"Improved experiment and result management through a clearer UI",
-					"Made evaluation workflows easier for both engineers and coding agents to use",
-				],
-			},
-			{
 				heading: "Published work",
-				body: "Higgs Realtime is BosonAI's real-time, audio-native speech-to-speech model, designed for low-latency conversation and reliable tool use.",
+				body: "Named in the contributor acknowledgments for Higgs Realtime and Higgs Realtime Duplex, covering audio-native conversation, tool use, and full-duplex interaction.",
 				links: [
 					{
+						label: "Read the Higgs Realtime Duplex article",
+						href: "https://www.boson.ai/blog/higgs-realtime-duplex",
+					},
+					{
 						label: "Read the Higgs Realtime launch article",
-						href: "https://staging.boson.ai/blog/higgs-realtime",
+						href: "https://www.boson.ai/blog/higgs-realtime",
 					},
 				],
 			},
@@ -283,6 +313,22 @@ export const terminalDocuments: Record<string, TerminalDocument> = {
 		intro:
 			"A collaborative exam-preparation platform that makes past exams interactive and helps students learn from one another.",
 		meta: ["Founder and lead developer", "May 2025", "400+ students"],
+		photos: [
+			{
+				src: "/iqbank/aria-team.jpg",
+				alt: "IQBank team beside their project poster and demonstration at ARIA",
+				caption: "ARIA · IQBank team and project showcase",
+				width: 800,
+				height: 600,
+			},
+			{
+				src: "/iqbank/aria-demo.jpg",
+				alt: "Demonstrating IQBank to visitors on a laptop at ARIA",
+				caption: "ARIA · Live IQBank demo",
+				width: 800,
+				height: 1067,
+			},
+		],
 		sections: [
 			{
 				heading: "role",
@@ -330,6 +376,22 @@ export const terminalDocuments: Record<string, TerminalDocument> = {
 		intro:
 			"Software Engineer Intern in Beijing, working on evaluation infrastructure for retrieval-augmented language models.",
 		meta: ["Software Engineer Intern", "May—Aug 2024", "Beijing"],
+		photos: [
+			{
+				src: "/xiaomi/campus-supervisors.jpg",
+				alt: "Xiling Zhao with his Xiaomi supervisors at the Xiaomi campus",
+				caption: "With my Xiaomi supervisors · Xiaomi campus",
+				width: 4032,
+				height: 3024,
+			},
+			{
+				src: "/xiaomi/campus-portrait.jpg",
+				alt: "Solo portrait of Xiling Zhao at the Xiaomi campus",
+				caption: "At the Xiaomi campus",
+				width: 4032,
+				height: 3024,
+			},
+		],
 		sections: [
 			{
 				heading: "work",

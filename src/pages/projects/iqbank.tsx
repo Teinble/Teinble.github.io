@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import ExperiencePhotos from "../../components/ExperiencePhotos";
 import { terminalDocuments } from "../../content/portfolio";
 
 const iqbank = terminalDocuments.iqbank;
@@ -273,6 +274,7 @@ const IQBank = ({ nightMode: _nightMode }: { nightMode: boolean }) => (
 				))}
 			</div>
 		</Section>
+		{iqbank.photos && <ExperiencePhotos photos={iqbank.photos} />}
 	</div>
 );
 

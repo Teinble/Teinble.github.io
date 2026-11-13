@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ExperiencePhotos from "../components/ExperiencePhotos";
 import {
 	education,
 	skillGroups,
@@ -102,6 +103,9 @@ const About = ({ nightMode: _nightMode }: { nightMode: boolean }) => {
 									))}
 								</div>
 							))}
+							{experience.photos && (
+								<ExperiencePhotos photos={experience.photos} />
+							)}
 							{id === "iqbank" && (
 								<Link
 									to="/projects/iqbank"

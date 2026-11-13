@@ -1,0 +1,20 @@
+onboarding = false
+[ui]
+agent_panel_sort = "priority"
+show_agent_labels_on_pane_borders = true
+
+status_indicators = "dots"
+[keys]
+switch_workspace = "cmd+alt+1..9"
+previous_tab = "cmd+alt+u"
+next_tab = "cmd+alt+o"
+focus_pane_up = "cmd+alt+i"
+focus_pane_left = "cmd+alt+j"
+focus_pane_down = "cmd+alt+k"
+focus_pane_right = "cmd+alt+l"
+
+[experimental]
+kitty_graphics = true
+
+[ui.toast]
+delivery = "herdr"

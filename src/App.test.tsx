@@ -304,8 +304,8 @@ describe("portfolio modes", () => {
 			screen.getByRole("button", { name: "Copy Yazi install command" }),
 		).toHaveTextContent("brew install yazi");
 		expect(
-			screen.getByRole("button", { name: "Copy Raycast install command" }),
-		).toHaveTextContent("brew install --cask raycast");
+			screen.getByRole("button", { name: "Copy Tinycast install command" }),
+		).toHaveTextContent("brew install --cask tinycast");
 		expect(
 			screen.getByRole("link", { name: "View dotfiles repository" }),
 		).toHaveAttribute("href", "https://github.com/Teinble/dotfiles");

@@ -133,7 +133,14 @@ const SetupRegistry = ({
 							Daily drivers
 						</h2>
 						<div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-							{["ghostty", "raycast", "obsidian", "codex", "arc"].map((id) => {
+							{[
+								"herdr",
+								"ardia",
+								"tinycast",
+								"ghostty",
+								"obsidian",
+								"codex",
+							].map((id) => {
 								const app = setupApplications.find((item) => item.id === id);
 								if (!app) return null;
 								return (
